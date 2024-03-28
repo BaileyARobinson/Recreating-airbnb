@@ -11,6 +11,9 @@ const isProduction = environment === 'production';
 
 const { ValidationError } = require('sequelize');
 
+  // backend/app.js
+const routes = require('./routes');
+
 const app = express();
 
 app.use(morgan('dev'));
@@ -40,6 +43,9 @@ if (!isProduction) {
       }
     })
   );
+
+  app.use(routes); // Connect all the routes
+
 
   app.use((_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
@@ -78,11 +84,10 @@ app.use((err, _req, res, _next) => {
 });
 
 
-  // backend/app.js
-const routes = require('./routes');
+
 
 // ...
 
-app.use(routes); // Connect all the routes
+
 
 module.exports = app;
