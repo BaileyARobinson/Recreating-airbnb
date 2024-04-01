@@ -1,19 +1,24 @@
 const router = require('express').Router();
 // const { setTokenCookie } = require('../../utils/auth.js');
-// const { User } = require('../../db/models');
+
+//importing each router
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
+const spotsRouter = require('./spots.js')
 const { restoreUser } = require('../../utils/auth.js');
+
+
+
 
 // backend/routes/index.js
 // ...
 
 
 router.use(restoreUser);
-
+//app.js is using these router with a prefix of /api
 router.use('/session', sessionRouter);
-
 router.use('/users', usersRouter);
+router.use('/spots', spotsRouter)
 // ...
 
 router.post('/test', function(req, res) {

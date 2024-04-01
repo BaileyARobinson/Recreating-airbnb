@@ -34,6 +34,8 @@ router.post('/',async (req, res, next) => {
 
     const safeUser = {
       id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       username: user.username,
     };
@@ -55,20 +57,23 @@ router.delete(
   }
 );
 
-router.get(
-  '/',
+router.get('/',
   (req, res) => {
-    const { user } = req;
+    
+    const { user } = req
+
     if (user) {
       const safeUser = {
         id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         username: user.username,
       };
-      return res.json({
+      return res.status(200).json({
         user: safeUser
       });
-    } else return res.json({ user: null });
+    } else return res.status(200). json({ user: null });
   }
 );
 

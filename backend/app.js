@@ -11,7 +11,7 @@ const isProduction = environment === 'production';
 
 const { ValidationError } = require('sequelize');
 
-  // backend/app.js
+//using the routes folder
 const routes = require('./routes');
 
 const app = express();
