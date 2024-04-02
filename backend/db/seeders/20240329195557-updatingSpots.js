@@ -1,6 +1,6 @@
 'use strict';
 const { Spot } = require('../models')
-const { Op } = require('sequelize');
+
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -39,7 +39,7 @@ module.exports = {
           city: 'city as well',
           state: 'ST',
           country: 'Country',
-          lat: '234.57',
+          lat: '45.57',
           lng: '65.93',
           name: 'Another Fun Property',
           description: 'another great property to spend time in. Lots of fun things to do around the area.',
