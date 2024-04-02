@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
        reviews.forEach((review) => totalStars += review.stars)
         
        let avgReview = (totalStars / reviews.length)
-       //console.log(avgReview)
+       
 
         editableSpot.avgReview = avgReview
         
@@ -65,7 +65,7 @@ router.get('/current', requireAuth, async (req, res) => {
     for (let spot of currUserSpots) {
 
         editSpot = spot.toJSON()
-        console.log(editSpot)
+        
     
     let reviews = await Review.findAll({
         where: {
@@ -76,7 +76,7 @@ router.get('/current', requireAuth, async (req, res) => {
        reviews.forEach((review) => totalStars += review.stars)
         
        let avgReview = (totalStars / reviews.length)
-       //console.log(avgReview)
+       
 
        editSpot.avgReview = avgReview
         
@@ -122,7 +122,7 @@ router.get('/:spotId', async (req,res) => {
     reviews.forEach((review) => totalStars += review.stars)
         
        let avgReview = (totalStars / reviews.length)
-       //console.log(avgReview)
+       
 
        editableSpot.avgReview = avgReview
 
@@ -170,7 +170,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 
     const spot = await Spot.findByPk(req.params.spotId)
     const { url, preview } = req.body
-    console.log(spot)
+    
     if(spot) {
 
         const newSpotImage = await SpotImage.create({
@@ -337,7 +337,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     const { user } = req
 
     const spot = await Spot.findByPk(req.params.spotId, {include: { model: Booking}})
-    console.log(spot.toJSON())
+    
 
     const { startDate, endDate } = req.body
 
@@ -371,7 +371,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
         for (let booking of spot.dataValues.Bookings){
             
             if (startDate >= booking.dataValues.startDate.toISOString() && startDate < booking.dataValues.endDate.toISOString() && endDate > booking.dataValues.startDate.toISOString() && endDate <= booking.dataValues.endDate.toISOString()){
-                console.log("I am here")
+                
                 return res.status(403).json({
                     message: "Sorry, this spot is already booked for the specified dates",
                     errors: {
