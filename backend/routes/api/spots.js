@@ -203,7 +203,6 @@ router.post('/:spotId/images', [requireAuth, authSpotMustBelongToCurrentUser, ca
 
     res.json(editableSpotImage)
 
-    =
 })
 
 router.put('/:spotId', [requireAuth, authSpotMustBelongToCurrentUser, validateCreateSpot], async (req, res, next) => {
