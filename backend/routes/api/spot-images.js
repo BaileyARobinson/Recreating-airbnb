@@ -9,7 +9,7 @@ const { requireAuth } = require('../../utils/auth');
 const { cannotFindSpotImage, authSpotBelongToUserFromSpotImg } = require('../../utils/helperfunctions')
 //DELETE A SPOT IMAGE
 
-router.delete('/:imageId', [requireAuth, cannotFindSpotImage, authSpotBelongToUserFromSpotImg, ], async (req, res) => {
+router.delete('/:imageId', [requireAuth, cannotFindSpotImage, authSpotBelongToUserFromSpotImg, authSpotBelongToUserFromSpotImg, ], async (req, res) => {
 
     const spotImage = await SpotImage.findByPk(req.params.imageId)
 

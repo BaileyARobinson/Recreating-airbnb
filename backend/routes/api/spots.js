@@ -184,10 +184,12 @@ router.post('/', [requireAuth, validateCreateSpot], async (req, res) => {
 })
 
 router.post('/:spotId/images', [requireAuth, authSpotMustBelongToCurrentUser, cannotFindSpot], async (req, res, next) => {
+router.post('/:spotId/images', [requireAuth, , cannotFindSpot, authSpotMustBelongToCurrentUser], async (req, res, next) => {
 
     const spot = await Spot.findByPk(req.params.spotId)
     const { url, preview } = req.body
     
+
     const newSpotImage = await SpotImage.create({
 
         spotId: req.params.spotId,
@@ -202,6 +204,7 @@ router.post('/:spotId/images', [requireAuth, authSpotMustBelongToCurrentUser, ca
     delete editableSpotImage ['spotId']
 
     res.json(editableSpotImage)
+
 
 })
 
