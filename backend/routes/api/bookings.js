@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 const { Spot, User, Booking, Review, ReviewImage, SpotImage } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const {validateCreateSpot} = require ('../../utils/validation')
-const {checkBookings, validateBookingDates, authBookingMustBelongToCurrentUser, authBookingOrSpotBelongsToCurrUser, findBookingWithId} = require ('../../utils/helperfunctions')
+const {checkBookings,validateBookingDates, authBookingMustBelongToCurrentUser, authBookingOrSpotBelongsToCurrUser, findBookingWithId} = require ('../../utils/helperfunctions')
 
 
 //GET ALL OF THE CURRENT USER'S BOOKINGS
@@ -28,7 +28,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 //EDIT A BOOKING 
 
-router.put('/:bookingId', [requireAuth, authBookingMustBelongToCurrentUser, validateBookingDates], async (req, res, next) => {
+router.put('/:bookingId', [requireAuth, findBookingWithId, authBookingMustBelongToCurrentUser, validateBookingDates], async (req, res, next) => {
 
     const  booking  = await Booking.findByPk(req.params.bookingId)
 

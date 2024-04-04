@@ -27,11 +27,11 @@ module.exports = {
           city: 'City',
           state: 'CA',
           country: 'USA',
-          lat: '75.87',
-          lng: '34.97',
+          lat: 75.87,
+          lng: 34.97,
           name: 'Fun Property',
           description: 'A fun property to visit. A lot of local things to do.',
-          price: '40.22',
+          price: 40.22,
         },
         {
           ownerId: 2,
@@ -39,11 +39,16 @@ module.exports = {
           city: 'city as well',
           state: 'ST',
           country: 'Country',
+<<<<<<< HEAD
           lat: '45.57',
           lng: '65.93',
+=======
+          lat: 34.57,
+          lng: 65.93,
+>>>>>>> dev
           name: 'Another Fun Property',
           description: 'another great property to spend time in. Lots of fun things to do around the area.',
-          price: '48.98'
+          price: 48.98
         }
 
       ], {validate: true})
