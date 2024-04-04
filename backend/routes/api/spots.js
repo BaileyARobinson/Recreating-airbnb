@@ -344,8 +344,12 @@ router.get('/:spotId/bookings', [requireAuth, cannotFindSpot], async (req, res, 
                     'firstName',
                     'lastName'
             ]}
-        })
-        res.json(allBookings)
+        }) 
+    
+        }
+        const resultsObj = {}
+        resultsObj.Bookings = allBookings
+        res.json(resultsObj)
 
     } else {
 
