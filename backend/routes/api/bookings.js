@@ -22,7 +22,9 @@ router.get('/current', requireAuth, async (req, res) => {
         }, include: { model: Spot}
     })
 
-    res.json(allBookings)
+    const resultObj = {}
+    resultObj.Bookings = allBookings
+    res.json(resultObj)
 
 })
 
