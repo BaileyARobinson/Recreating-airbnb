@@ -7,7 +7,7 @@ const { Op } = require('sequelize');
 const { Spot, User, Booking, Review, ReviewImage, SpotImage, Sequelize } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const {validateCreateSpot, validateCreateReview} = require ('../../utils/validation');
-const {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, checkIfSpotExists} = require ('../../utils/helperfunctions')
+const {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, checkIfSpotExists, cannotFindSpot} = require ('../../utils/helperfunctions')
 
 //get calls
 
@@ -88,7 +88,7 @@ router.get('/current', requireAuth, async (req, res) => {
        } else {
             avgReview = null}
 
-       editSpot.avgReview = avgReview
+            editSpot.avgReview = avgReview
         
         const image = await SpotImage.findOne({where: {
             spotId: editSpot.id
@@ -133,8 +133,13 @@ router.get('/:spotId', async (req, res, next) => {
             spotId: editableSpot.id}})
 
     editableSpot.numReviews = reviews.length
-
-    let avgReview = getAvgReview(reviews)
+    
+    let avgReview;
+    if (reviews.length) {
+        avgReview = getAvgReview(reviews)
+    } else {
+        avgReview = null
+    }
 
        editableSpot.avgReview = avgReview
 
@@ -265,15 +270,18 @@ router.delete('/:spotId', [requireAuth, authSpotMustBelongToCurrentUser], async 
 
 // Get all Reviews by a Spot's id
 
-router.get('/:spotId/reviews', async (req, res, next) => {
+router.get('/:spotId/reviews', cannotFindSpot, async (req, res, next) => {
 
     const spot = await Spot.findByPk(req.params.spotId, { include: { model: Review }})
 
-    if (spot) {
+    console.log(spot)
+    const reviewArr = [];
+    const reviews = {};
+    if (spot.dataValues.Reviews.length) {
 
        editableSpot = spot.toJSON()
-        const reviews = {}
-        const reviewArr = []
+        
+        
        for (let review of editableSpot.Reviews) {
 
             const totalReview = await Review.findByPk(review.id, {include: [ 
@@ -288,16 +296,13 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 
             reviewArr.push(totalReview)
 
-       }
-       reviews.reviews = reviewArr
+       } 
+       
+    }
+    reviews.Reviews = reviewArr
 
         res.json(reviews)
-
-    } else {
-        const error = new Error("Spot couldn't be found")
-        error.status = 404
-        next(error)
-    }
+    
 });
 
 //CREATE A REVIEW FOR A SPOT BASED ON THE SPOT'S ID
@@ -333,14 +338,14 @@ router.post('/:spotId/reviews', [requireAuth, validateCreateReview, checkIfSpotE
 
 // GET ALL BOOKINGS FOR A SPOT BASED ON THE SPOT'S ID
 
-router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
+router.get('/:spotId/bookings', [requireAuth, cannotFindSpot], async (req, res, next) => {
 
     const { user } = req
 
     const spot = await Spot.findByPk(req.params.spotId)
 
   
-  if (spot)  {
+  
     if (user.dataValues.id === spot.dataValues.ownerId) {
 
         const allBookings = await Booking.findAll({
@@ -367,11 +372,6 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
             ]
         })
         res.json(allBookings)
-    }
-    } else {
-        const error = new Error("Spot couldn't be found")
-        error.status = 404
-        next(error)
     }
 
 })

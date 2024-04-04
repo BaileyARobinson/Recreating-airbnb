@@ -45,8 +45,9 @@ router.get('/current', requireAuth, async (req, res) => {
     const formatedReviews = reviews.map((review) => {
 
         editableReview = review.toJSON()
-        console.log(editableReview)
-        editableReview.previewImage = editableReview.Spot.SpotImages[0].url
+        
+        if (editableReview.Spot.SpotImages[0]){
+        editableReview.previewImage = editableReview.Spot.SpotImages[0].url}
 
        delete editableReview.Spot.SpotImages
 
