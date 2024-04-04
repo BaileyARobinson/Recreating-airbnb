@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
 
         const editableSpot = spot.toJSON()
 
-        editableSpot.avgReview = avgReview 
+        editableSpot.avgRating = avgReview 
         
         if (spot.dataValues.SpotImages[0]) {
         const previewImageURL = spot.dataValues.SpotImages[0].dataValues.url
@@ -88,7 +88,7 @@ router.get('/current', requireAuth, async (req, res) => {
        } else {
             avgReview = null}
 
-            editSpot.avgReview = avgReview
+            editSpot.avgRating = avgReview
         
         const image = await SpotImage.findOne({where: {
             spotId: editSpot.id
@@ -141,7 +141,7 @@ router.get('/:spotId', async (req, res, next) => {
         avgReview = null
     }
 
-       editableSpot.avgReview = avgReview
+       editableSpot.avgStarRating = avgReview
 
        res.json(editableSpot)
 
@@ -178,42 +178,36 @@ router.post('/', [requireAuth, validateCreateSpot], async (req, res) => {
     })
     
     
-    res.status(201).json(newSpot)
+    res.json(newSpot)
 
 
 })
 
-router.post('/:spotId/images', [requireAuth, authSpotMustBelongToCurrentUser], async (req, res, next) => {
+router.post('/:spotId/images', [requireAuth, authSpotMustBelongToCurrentUser, cannotFindSpot], async (req, res, next) => {
 
     const spot = await Spot.findByPk(req.params.spotId)
     const { url, preview } = req.body
     
-    if(spot) {
 
-        const newSpotImage = await SpotImage.create({
+    const newSpotImage = await SpotImage.create({
 
-            spotId: req.params.spotId,
-            url,
-            preview
-        })
+        spotId: req.params.spotId,
+        url,
+        preview
+    })
 
-        const editableSpotImage = newSpotImage.toJSON()
-        
-        delete editableSpotImage ['createdAt']
-        delete editableSpotImage ['updatedAt']
-        delete editableSpotImage ['spotId']
+    const editableSpotImage = newSpotImage.toJSON()
+    
+    delete editableSpotImage ['createdAt']
+    delete editableSpotImage ['updatedAt']
+    delete editableSpotImage ['spotId']
 
-        res.json(editableSpotImage)
+    res.json(editableSpotImage)
 
-    } else {
-        const error = new Error("Spot couldn't be found")
-        error.status = 404
-        next(error)
 
-    }
 })
 
-router.put('/:spotId', [requireAuth, authSpotMustBelongToCurrentUser, validateCreateSpot], async (req, res, next) => {
+router.put('/:spotId', [requireAuth, cannotFindSpot, authSpotMustBelongToCurrentUser, validateCreateSpot], async (req, res, next) => {
 
   const spot = await Spot.findByPk(req.params.spotId) 
   
@@ -221,7 +215,6 @@ router.put('/:spotId', [requireAuth, authSpotMustBelongToCurrentUser, validateCr
 
   const {address, city, state, country, lat, lng, name, description, price } = req.body
    
-  if (spot.dataValues.ownerId === user.id){
 
     if (address !== null) spot.address = address
     if (city !== null) spot.city = city
@@ -236,12 +229,6 @@ router.put('/:spotId', [requireAuth, authSpotMustBelongToCurrentUser, validateCr
     spot.save()
 
     res.json(spot)
-
-  } else {
-    const error = new Error("Spot couldn't be found")
-        error.status = 404
-        next(error)
-  }
 
 })
 
@@ -307,7 +294,7 @@ router.get('/:spotId/reviews', cannotFindSpot, async (req, res, next) => {
 
 //CREATE A REVIEW FOR A SPOT BASED ON THE SPOT'S ID
 
-router.post('/:spotId/reviews', [requireAuth, validateCreateReview, checkIfSpotExists], async (req, res, next) => {
+router.post('/:spotId/reviews', [requireAuth, checkIfSpotExists, validateCreateReview], async (req, res, next) => {
 
     const { user } = req
 
