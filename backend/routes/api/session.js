@@ -11,8 +11,20 @@ const { User } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const validateLogin = [
+  check('credential')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Email or username is required.'),
+  check('password')
+    .exists({ checkFalsy: true })
+    .withMessage('Password is required.'),
+ // Error Response for Body Validation Errors
+  handleValidationErrors,
+];
 
-router.post('/',async (req, res, next) => {
+
+router.post('/', validateLogin, async (req, res, next) => {
     const { credential, password } = req.body;
 
     const user = await User.unscoped().findOne({
@@ -73,20 +85,10 @@ router.get('/',
       return res.status(200).json({
         user: safeUser
       });
-    } else return res.status(200). json({ user: null });
+    } else return res.status(200).json({ user: null });
   }
 );
 
-const validateLogin = [
-  check('credential')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage('Please provide a valid email or username.'),
-  check('password')
-    .exists({ checkFalsy: true })
-    .withMessage('Please provide a password.'),
-  handleValidationErrors
-];
 
 router.post(
   '/',
