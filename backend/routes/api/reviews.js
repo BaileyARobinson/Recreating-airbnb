@@ -24,7 +24,7 @@ router.get('/current', requireAuth, async (req, res) => {
                 'firstName',
                 'lastName'
             ]},
-            { model: Spot, 
+            { model: Spot, attributes: {exclude: ['description']}, 
                 include: { model: SpotImage, 
                     where: {
                         preview: true
@@ -47,8 +47,10 @@ router.get('/current', requireAuth, async (req, res) => {
         editableReview = review.toJSON()
         
         if (editableReview.Spot.SpotImages[0]){
-        editableReview.previewImage = editableReview.Spot.SpotImages[0].url}
-
+        editableReview.previewImage = editableReview.Spot.SpotImages[0].url
+        } else {
+            editableReview.previewImage = null;
+            }
        delete editableReview.Spot.SpotImages
 
         return editableReview
@@ -62,7 +64,7 @@ router.get('/current', requireAuth, async (req, res) => {
     res.json(finalReviews)
 })
 
-router.post('/:reviewId/images', [requireAuth, authReviewMustBelongToCurrUser, cannotFindReview], async (req, res, next) => {
+router.post('/:reviewId/images', [requireAuth, cannotFindReview, authReviewMustBelongToCurrUser ], async (req, res, next) => {
 
     const { url } = req.body
 
@@ -91,7 +93,7 @@ router.post('/:reviewId/images', [requireAuth, authReviewMustBelongToCurrUser, c
 
 })
 
-router.put('/:reviewId/', [requireAuth, authReviewMustBelongToCurrUser, cannotFindReview, validateCreateReview], async (req, res, next) => {
+router.put('/:reviewId/', [requireAuth, cannotFindReview, authReviewMustBelongToCurrUser, validateCreateReview], async (req, res, next) => {
 
     const { review, stars} = req.body
 

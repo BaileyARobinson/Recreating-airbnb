@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
 
         const editableSpot = spot.toJSON()
 
-        editableSpot.avgReview = avgReview 
+        editableSpot.avgRating = avgReview 
         
         if (spot.dataValues.SpotImages[0]) {
         const previewImageURL = spot.dataValues.SpotImages[0].dataValues.url
@@ -178,7 +178,7 @@ router.post('/', [requireAuth, validateCreateSpot], async (req, res) => {
     })
     
     
-    res.status(201).json(newSpot)
+    res.json(newSpot)
 
 
 })
@@ -294,7 +294,7 @@ router.get('/:spotId/reviews', cannotFindSpot, async (req, res, next) => {
 
 //CREATE A REVIEW FOR A SPOT BASED ON THE SPOT'S ID
 
-router.post('/:spotId/reviews', [requireAuth, validateCreateReview, checkIfSpotExists], async (req, res, next) => {
+router.post('/:spotId/reviews', [requireAuth, checkIfSpotExists, validateCreateReview], async (req, res, next) => {
 
     const { user } = req
 

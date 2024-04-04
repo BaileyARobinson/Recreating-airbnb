@@ -172,7 +172,7 @@ const findBookingWithId = async (req, res, next) => {
 
 const checkIfSpotExists = async (req, res, next) => {
 
-    const spot = Spot.findByPk(req.params.spotId)
+    const spot = await Spot.findByPk(req.params.spotId)
 
     if (spot) next()
     else {
