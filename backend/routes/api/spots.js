@@ -344,11 +344,12 @@ router.get('/:spotId/bookings', [requireAuth, cannotFindSpot], async (req, res, 
                     'firstName',
                     'lastName'
             ]}
-        }) 
-    
-        }
+        })
+
         const resultsObj = {}
-        resultsObj.Bookings = allBookings
+            resultsObj.Bookings = allBookings
+        
+
         res.json(resultsObj)
 
     } else {
@@ -362,7 +363,11 @@ router.get('/:spotId/bookings', [requireAuth, cannotFindSpot], async (req, res, 
                 'endDate'
             ]
         })
-        res.json(allBookings)
+        const resultsObj = {}
+            resultsObj.Bookings = allBookings
+        
+
+        res.json(resultsObj)
     }
 
 })

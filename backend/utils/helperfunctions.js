@@ -168,7 +168,7 @@ const authBookingOrSpotBelongsToCurrUser = async (req,res,next) => {
 
 const findBookingWithId = async (req, res, next) => {
 
-    const booking = Booking.findByPk(req.params.bookingId)
+    const booking = await Booking.findByPk(req.params.bookingId)
 
     if (booking) {
         next()
