@@ -183,34 +183,28 @@ router.post('/', [requireAuth, validateCreateSpot], async (req, res) => {
 
 })
 
-router.post('/:spotId/images', [requireAuth, authSpotMustBelongToCurrentUser], async (req, res, next) => {
+router.post('/:spotId/images', [requireAuth, , cannotFindSpot, authSpotMustBelongToCurrentUser], async (req, res, next) => {
 
     const spot = await Spot.findByPk(req.params.spotId)
     const { url, preview } = req.body
     
-    if(spot) {
 
-        const newSpotImage = await SpotImage.create({
+    const newSpotImage = await SpotImage.create({
 
-            spotId: req.params.spotId,
-            url,
-            preview
-        })
+        spotId: req.params.spotId,
+        url,
+        preview
+    })
 
-        const editableSpotImage = newSpotImage.toJSON()
-        
-        delete editableSpotImage ['createdAt']
-        delete editableSpotImage ['updatedAt']
-        delete editableSpotImage ['spotId']
+    const editableSpotImage = newSpotImage.toJSON()
+    
+    delete editableSpotImage ['createdAt']
+    delete editableSpotImage ['updatedAt']
+    delete editableSpotImage ['spotId']
 
-        res.json(editableSpotImage)
+    res.json(editableSpotImage)
 
-    } else {
-        const error = new Error("Spot couldn't be found")
-        error.status = 404
-        next(error)
 
-    }
 })
 
 router.put('/:spotId', [requireAuth, authSpotMustBelongToCurrentUser, validateCreateSpot], async (req, res, next) => {
