@@ -365,7 +365,7 @@ router.get('/:spotId/bookings', [requireAuth, cannotFindSpot], async (req, res, 
 
 //CREATE A BOOKING FROM A SPOT BASED ON THE SPOT ID
 
-router.post('/:spotId/bookings', [requireAuth, authSpotCannotBelongToCurrentUser, validateBookingDates], async (req, res, next) => {
+router.post('/:spotId/bookings', [requireAuth, checkIfSpotExists, authSpotCannotBelongToCurrentUser, validateBookingDates], async (req, res, next) => {
     const { user } = req
 
     const spot = await Spot.findByPk(req.params.spotId, {include: { model: Booking}})
