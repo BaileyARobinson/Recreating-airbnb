@@ -32,7 +32,7 @@ if (startDate >= booking.dataValues.startDate.toISOString() && startDate < booki
 }
 
 
-else if (startDate >= booking.dataValues.startDate.toISOString() && startDate < booking.dataValues.endDate.toISOString()) {
+else if (booking.dataValues.startDate.toISOString() <= startDate  && startDate < booking.dataValues.endDate.toISOString()) {
     const error = new Error("Sorry, this spot is already booked for the specified dates")
     error.errors = {
         startDate: "Start date conflicts with an existing booking",
@@ -47,7 +47,15 @@ else if (startDate >= booking.dataValues.startDate.toISOString() && startDate < 
     }, error.status = 403
     return error
 
-        }
+    } else if (startDate <= booking.dataValues.startDate.toISOString() && endDate >= booking.dataValues.endDate.toISOString()) {
+        const error = new Error("Sorry, this spot is already booked for the specified dates")
+        error.errors = {
+            startDate: "Start date conflicts with an existing booking",
+            endDate: "End date conflicts with an existing booking"
+        }, error.status = 403
+        return error
+
+    }
 
         return null
     }
