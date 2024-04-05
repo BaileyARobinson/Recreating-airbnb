@@ -321,7 +321,7 @@ router.post('/:spotId/reviews', [requireAuth, checkIfSpotExists, validateCreateR
 
 // GET ALL BOOKINGS FOR A SPOT BASED ON THE SPOT'S ID
 
-router.get('/:spotId/bookings', [requireAuth, cannotFindSpot], async (req, res, next) => {
+router.get('/:spotId/bookings', [requireAuth, checkIfSpotExists], async (req, res, next) => {
 
     const { user } = req
 
