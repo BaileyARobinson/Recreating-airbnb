@@ -285,13 +285,16 @@ const authSpotBelongToUserFromSpotImg = async (req, res, next) => {
 }
 
 
-//date format received "2021-11-19 20:39:36"
+//date format received "2024-04-05T17:13:32.547Z"
 //date format to return "2021-11-19 20:39:36"
 const convertDate = (date) => {
+    const formattingDate = [date.toSubstring(0,10), date.toSubstring(12,19)]
+    
+    const formattedDate = formattingDate.join(" ")
 
-
+    return formattedDate
 }
 
 
 
-module.exports = {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authBookingMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, authBookingOrSpotBelongsToCurrUser, findBookingWithId, checkIfSpotExists, authReviewMustBelongToCurrUser, cannotFindReview, authRevBelongToUserFromRevImg, cannotFindReviewImage, cannotFindSpotImage, authSpotBelongToUserFromSpotImg};
+module.exports = {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authBookingMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, authBookingOrSpotBelongsToCurrUser, findBookingWithId, checkIfSpotExists, authReviewMustBelongToCurrUser, cannotFindReview, authRevBelongToUserFromRevImg, cannotFindReviewImage, cannotFindSpotImage, authSpotBelongToUserFromSpotImg, convertDate};

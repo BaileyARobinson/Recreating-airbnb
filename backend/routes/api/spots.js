@@ -13,7 +13,7 @@ const {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCu
 
 router.get('/', validateQuery, async (req, res, next) => {
 
-    let { page , size } = req.query
+    let { page , size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
 
     const pagination = {}
 
@@ -25,7 +25,7 @@ router.get('/', validateQuery, async (req, res, next) => {
 
     pagination.limit = size;
     pagination.offset = size * (page - 1)
-
+    
 
     const getAllSpots = await Spot.findAll({  
         include: [ { model: Review}, { model: SpotImage}],
