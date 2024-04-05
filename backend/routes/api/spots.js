@@ -203,7 +203,7 @@ router.post('/:spotId/images', [requireAuth, checkIfSpotExists, authSpotMustBelo
 
 })
 
-router.put('/:spotId', [requireAuth, cannotFindSpot, authSpotMustBelongToCurrentUser, validateCreateSpot], async (req, res, next) => {
+router.put('/:spotId', [requireAuth, checkIfSpotExists, authSpotMustBelongToCurrentUser, validateCreateSpot], async (req, res, next) => {
 
   const spot = await Spot.findByPk(req.params.spotId) 
   
