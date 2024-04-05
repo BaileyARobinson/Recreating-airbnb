@@ -7,7 +7,7 @@ const { Op } = require('sequelize');
 const { Spot, User, Booking, Review, ReviewImage, SpotImage, Sequelize } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const {validateCreateSpot, validateCreateReview} = require ('../../utils/validation');
-const {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, checkIfSpotExists, cannotFindSpot, checkPageAndSize} = require ('../../utils/helperfunctions')
+const {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, checkIfSpotExists, checkPageAndSize} = require ('../../utils/helperfunctions')
 
 //get calls
 
@@ -179,7 +179,7 @@ router.post('/', [requireAuth, validateCreateSpot], async (req, res) => {
 
 })
 
-router.post('/:spotId/images', [requireAuth, cannotFindSpot, authSpotMustBelongToCurrentUser], async (req, res, next) => {
+router.post('/:spotId/images', [requireAuth, checkIfSpotExists, authSpotMustBelongToCurrentUser], async (req, res, next) => {
 
     const spot = await Spot.findByPk(req.params.spotId)
     const { url, preview } = req.body
@@ -248,7 +248,7 @@ router.delete('/:spotId', [requireAuth, checkIfSpotExists, authSpotMustBelongToC
 
 // Get all Reviews by a Spot's id
 
-router.get('/:spotId/reviews', cannotFindSpot, async (req, res, next) => {
+router.get('/:spotId/reviews', checkIfSpotExists, async (req, res, next) => {
 
     const spot = await Spot.findByPk(req.params.spotId, { include: { model: Review }})
 

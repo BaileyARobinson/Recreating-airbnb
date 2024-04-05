@@ -290,18 +290,6 @@ const authSpotBelongToUserFromSpotImg = async (req, res, next) => {
     }
 }
 
-const cannotFindSpot = async (req, res, next) => {
-
-    const spot = await Spot.findByPk(req.params.spotId)
-    console.log(spot)
-    if (spot) next()
-    else {
-        const error = new Error("Spot couldn't be found")
-        error.status = 404
-        next(error)
-    }
-
-}
 
 const checkPageAndSize = async (req, res, next) => {
 
@@ -346,4 +334,4 @@ const checkPageAndSize = async (req, res, next) => {
 
 
 
-module.exports = {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authBookingMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, authBookingOrSpotBelongsToCurrUser, findBookingWithId, checkIfSpotExists, authReviewMustBelongToCurrUser, cannotFindReview, authRevBelongToUserFromRevImg, cannotFindReviewImage, cannotFindSpotImage, authSpotBelongToUserFromSpotImg, cannotFindSpot, checkPageAndSize};
+module.exports = {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authBookingMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, authBookingOrSpotBelongsToCurrUser, findBookingWithId, checkIfSpotExists, authReviewMustBelongToCurrUser, cannotFindReview, authRevBelongToUserFromRevImg, cannotFindReviewImage, cannotFindSpotImage, authSpotBelongToUserFromSpotImg, checkPageAndSize};
