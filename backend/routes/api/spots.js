@@ -6,12 +6,12 @@ const { Op } = require('sequelize');
 
 const { Spot, User, Booking, Review, ReviewImage, SpotImage, Sequelize } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
-const {validateCreateSpot, validateCreateReview} = require ('../../utils/validation');
-const {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, checkIfSpotExists, checkPageAndSize} = require ('../../utils/helperfunctions')
+const {validateCreateSpot, validateCreateReview, validateQuery} = require ('../../utils/validation');
+const {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, checkIfSpotExists} = require ('../../utils/helperfunctions')
 
 //get calls
 
-router.get('/', checkPageAndSize, async (req, res, next) => {
+router.get('/', validateQuery, async (req, res, next) => {
 
     let { page , size } = req.query
 

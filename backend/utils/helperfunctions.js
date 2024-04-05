@@ -291,47 +291,5 @@ const authSpotBelongToUserFromSpotImg = async (req, res, next) => {
 }
 
 
-const checkPageAndSize = async (req, res, next) => {
 
-    let { page, size } = req.query
-
-    if (page && size) {
-
-        // console.log(isNaN(page))
-        // console.log(isNaN(size))
-
-        if ((isNaN(page) || page < 1) && (isNaN(size) || size < 1)) {
-            const error = new Error("Bad Request")
-            error.errors = { page: "Page must be greater than or equal to 1", 
-            size: "Size must be greater than or equal to 1"
-            }
-            error.status = 400
-            next(error)
-        }
-
-        if (isNaN(page) || page < 1) {
-            const error = new Error("Bad Request")
-            error.errors = { page: "Page must be greater than or equal to 1"
-            }
-            error.status = 400
-            next(error)
-
-        }
-
-        if (isNaN(size) || size < 1) {
-            const error = new Error("Bad Request")
-            error.errors = { size: "Size must be greater than or equal to 1"
-            }
-            error.status = 400
-            next(error)
-        } else {
-            next()
-        }
-    } else {
-        next()
-    }
-}
-
-
-
-module.exports = {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authBookingMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, authBookingOrSpotBelongsToCurrUser, findBookingWithId, checkIfSpotExists, authReviewMustBelongToCurrUser, cannotFindReview, authRevBelongToUserFromRevImg, cannotFindReviewImage, cannotFindSpotImage, authSpotBelongToUserFromSpotImg, checkPageAndSize};
+module.exports = {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authBookingMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, authBookingOrSpotBelongsToCurrUser, findBookingWithId, checkIfSpotExists, authReviewMustBelongToCurrUser, cannotFindReview, authRevBelongToUserFromRevImg, cannotFindReviewImage, cannotFindSpotImage, authSpotBelongToUserFromSpotImg};
