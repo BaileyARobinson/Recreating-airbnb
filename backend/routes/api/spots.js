@@ -383,13 +383,6 @@ router.post('/:spotId/bookings', [requireAuth, checkIfSpotExists, authSpotCannot
 
     const { startDate, endDate } = req.body
 
-    if (!spot) {
-
-        return res.status(404).json({
-            message: "Spot couldn't be found"
-        })
-
-    }
 
     if (user.dataValues.id !== spot.dataValues.ownerId) {
 
@@ -408,26 +401,31 @@ router.post('/:spotId/bookings', [requireAuth, checkIfSpotExists, authSpotCannot
                 error: "endDate cannot be on or before startDate"
             })
         }
-        //booking conflict 
-        
-        for (let booking of spot.dataValues.Bookings){
 
-            const error = checkBookings(startDate, endDate, booking)
-            console.log(error)
-            if (error) next(error)
+        const results = spot.dataValues.Bookings.map((eachBooking) => {
 
-        }
-
-        const newBooking = await Booking.create({
-            spotId: spot.dataValues.id,
-            userId: user.dataValues.id,
-            startDate,
-            endDate
+            return checkBookings(startDate, endDate, eachBooking)
         })
-        res.json(newBooking)
+        
+        
+        const error = results.find((result) => {
+            return result !== null
+        })
+       
+        if (error) {
+            next(error)
+        } else {
+
+            const newBooking = await Booking.create({
+                spotId: spot.dataValues.id,
+                userId: user.dataValues.id,
+                startDate,
+                endDate
+            })
+            res.json(newBooking)
         }
 
-
+    }
 })
 
 module.exports = router;

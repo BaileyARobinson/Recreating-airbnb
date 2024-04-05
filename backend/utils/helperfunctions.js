@@ -20,7 +20,14 @@ function getAvgReview(array) {
 function checkBookings(startDate, endDate, booking) {
 
     const bookingStartDate = booking.dataValues.startDate.toISOString().substring(0,10)
-    const bookingEndDate = endDate > booking.dataValues.startDate.toISOString().substring(0,10)
+    const bookingEndDate = booking.dataValues.endDate.toISOString().substring(0,10)
+
+
+    console.log("BookingStartDate", bookingStartDate, "BookingEndDate", bookingEndDate)
+    console.log("StartDate", startDate, "EndDate", endDate)
+    
+    
+
     // start date and end date between booking
     if (startDate >= bookingStartDate && startDate < bookingEndDate && endDate > bookingStartDate && endDate <= bookingEndDate){
             
