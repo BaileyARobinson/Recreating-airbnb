@@ -24,7 +24,7 @@ router.get('/current', requireAuth, async (req, res) => {
                 'firstName',
                 'lastName'
             ]},
-            { model: Spot, attributes: {exclude: ['description']}, 
+            { model: Spot,  
                 include: { model: SpotImage, 
                     where: {
                         preview: true
@@ -32,7 +32,7 @@ router.get('/current', requireAuth, async (req, res) => {
                 },
                 attributes: 
                 { exclude: 
-                    ['createdAt', 'updatedAt']}, 
+                    ['description','createdAt', 'updatedAt']}, 
                     // include: {model: SpotImage, 
                     //     where: {
                     //       preview: true  
@@ -47,9 +47,9 @@ router.get('/current', requireAuth, async (req, res) => {
         editableReview = review.toJSON()
         
         if (editableReview.Spot.SpotImages[0]){
-        editableReview.previewImage = editableReview.Spot.SpotImages[0].url
+        editableReview.Spot.previewImage = editableReview.Spot.SpotImages[0].url
         } else {
-            editableReview.previewImage = null;
+            editableReview.Spot.previewImage = null;
             }
        delete editableReview.Spot.SpotImages
 

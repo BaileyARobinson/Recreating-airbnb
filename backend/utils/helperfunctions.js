@@ -293,12 +293,12 @@ const authSpotBelongToUserFromSpotImg = async (req, res, next) => {
 const cannotFindSpot = async (req, res, next) => {
 
     const spot = await Spot.findByPk(req.params.spotId)
-
+    console.log(spot)
     if (spot) next()
     else {
         const error = new Error("Spot couldn't be found")
         error.status = 404
-        next (error)
+        next(error)
     }
 
 }

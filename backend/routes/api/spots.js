@@ -49,6 +49,8 @@ router.get('/', checkPageAndSize, async (req, res, next) => {
         if (spot.dataValues.SpotImages[0]) {
         const previewImageURL = spot.dataValues.SpotImages[0].dataValues.url
         editableSpot.previewImage = previewImageURL
+        } else {
+            editableSpot.previewImage = null
         }
 
         delete editableSpot.Reviews
@@ -181,7 +183,7 @@ router.post('/', [requireAuth, validateCreateSpot], async (req, res) => {
     })
     
     
-    res.json(newSpot)
+    res.status(201).json(newSpot)
 
 
 })
@@ -324,7 +326,7 @@ router.post('/:spotId/reviews', [requireAuth, checkIfSpotExists, validateCreateR
             review, 
             stars
         })
-        res.json(newReview)
+        res.status(201).json(newReview)
 
     }
         

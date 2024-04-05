@@ -26,11 +26,10 @@ const handleValidationErrors = (req, _res, next) => {
 const validateCreateSpot = [
   check('address')
     .exists({ checkFalsy: true })
-    .isString()
     .withMessage('Street address is required'),
   check('city')
     .exists({ checkFalsy: true })
-    .withMessage('city is required'),
+    .withMessage('City is required'),
   check('state')
       .exists({ checkFalsy: true })
       .withMessage('State is required'),
