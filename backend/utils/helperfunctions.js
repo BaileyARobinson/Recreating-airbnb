@@ -19,8 +19,10 @@ function getAvgReview(array) {
 
 function checkBookings(startDate, endDate, booking) {
 
+const bookingStartDate = booking.dataValues.startDate.toISOString().substring(0,10)
+const bookingEndDate = endDate > booking.dataValues.startDate.toISOString().substring(0,10)
 
-if (startDate >= booking.dataValues.startDate.toISOString() && startDate < booking.dataValues.endDate.toISOString() && endDate > booking.dataValues.startDate.toISOString() && endDate <= booking.dataValues.endDate.toISOString()){
+if (startDate >= bookingStartDate && startDate < bookingEndDate && endDate > bookingStartDate && endDate <= bookingEndDate){
         
     const error = new Error("Sorry, this spot is already booked for the specified dates")
     error.errors = {
@@ -29,17 +31,25 @@ if (startDate >= booking.dataValues.startDate.toISOString() && startDate < booki
     }, error.status = 403
     return error
     
-}
+} else if (startDate <= bookingStartDate && bookingEndDate) {
+    const error = new Error("Sorry, this spot is already booked for the specified dates")
+    error.errors = {
+        startDate: "Start date conflicts with an existing booking",
+        endDate: "End date conflicts with an existing booking"
+    }, error.status = 403
+    return error
+
+} 
 
 
-else if (startDate >= booking.dataValues.startDate.toISOString() && startDate < booking.dataValues.endDate.toISOString()) {
+else if (startDate >= bookingStartDate && startDate < bookingEndDate) {
     const error = new Error("Sorry, this spot is already booked for the specified dates")
     error.errors = {
         startDate: "Start date conflicts with an existing booking",
     }, error.status = 403
     return error
     
-} else if (endDate > booking.dataValues.startDate.toISOString() && endDate <= booking.dataValues.endDate.toISOString()) {
+} else if (endDate > bookingStartDate && endDate <= bookingEndDate) {
 
     const error = new Error("Sorry, this spot is already booked for the specified dates")
     error.errors = {
@@ -48,6 +58,8 @@ else if (startDate >= booking.dataValues.startDate.toISOString() && startDate < 
     return error
 
         }
+
+    
 
         return null
     }
