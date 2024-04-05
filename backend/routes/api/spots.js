@@ -233,7 +233,7 @@ router.put('/:spotId', [requireAuth, cannotFindSpot, authSpotMustBelongToCurrent
 
 })
 
-router.delete('/:spotId', [requireAuth, authSpotMustBelongToCurrentUser], async (req, res, next) => {
+router.delete('/:spotId', [requireAuth, checkIfSpotExists, authSpotMustBelongToCurrentUser], async (req, res, next) => {
 
     const spot = await Spot.findByPk(req.params.spotId) 
   
