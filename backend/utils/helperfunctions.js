@@ -49,14 +49,14 @@ function checkBookings(startDate, endDate, booking) {
     } 
 
 
-    else if (startDate >= bookingStartDate && startDate < bookingEndDate) {
+    else if (startDate >= bookingStartDate && startDate <= bookingEndDate) {
         const error = new Error("Sorry, this spot is already booked for the specified dates")
         error.errors = {
             startDate: "Start date conflicts with an existing booking",
         }, error.status = 403
         return error
         
-    } else if (endDate > bookingStartDate && endDate <= bookingEndDate) {
+    } else if (endDate >= bookingStartDate && endDate <= bookingEndDate) {
 
         const error = new Error("Sorry, this spot is already booked for the specified dates")
         error.errors = {
@@ -185,6 +185,8 @@ const findBookingWithId = async (req, res, next) => {
         next()
     } else {
         const error = new Error("Booking couldn't be found")
+        error.status = 404
+        next(error)
     }
 
 }
