@@ -155,12 +155,6 @@ const authBookingOrSpotBelongsToCurrUser = async (req,res,next) => {
     const { user } = req
     
     const booking = await Booking.findByPk(req.params.bookingId, {include: {model:Spot}})
-    console.log(booking)
-
-        console.log(user.dataValues.id)
-        console.log(booking.dataValues.userId)
-        console.log(user.dataValues.id)
-        console.log(booking.dataValues.Spot.dataValues.ownerId)
 
     if(user.dataValues.id === booking.dataValues.userId || user.dataValues.id === booking.dataValues.Spot.dataValues.ownerId) {
         next()
@@ -231,7 +225,7 @@ const cannotFindReview = async (req, res, next) => {
 const cannotFindReviewImage = async (req, res, next) => {
 
     const reviewImage = await ReviewImage.findByPk(req.params.imageId)
-    console.log(reviewImage)
+
     if(reviewImage) next ()
     else {
         const error = new Error("Review Image couldn't be found")
@@ -248,7 +242,7 @@ const authRevBelongToUserFromRevImg = async (req, res, next) => {
     const reviewImage = await ReviewImage.findByPk(req.params.imageId)
     
     const review = await Review.findByPk(reviewImage.dataValues.reviewId)
-    console.log(review)
+
 
     if (user.dataValues.id === review.dataValues.userId) {
         next()
@@ -288,6 +282,14 @@ const authSpotBelongToUserFromSpotImg = async (req, res, next) => {
         error.status = 403
         next (error)
     }
+}
+
+
+//date format received "2021-11-19 20:39:36"
+//date format to return "2021-11-19 20:39:36"
+const convertDate = (date) => {
+
+
 }
 
 

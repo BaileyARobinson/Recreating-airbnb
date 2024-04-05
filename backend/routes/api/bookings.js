@@ -67,7 +67,7 @@ router.delete('/:bookingId', [requireAuth, findBookingWithId, authBookingOrSpotB
     const date = new Date()
 
     const booking = await Booking.findByPk(req.params.bookingId)
-    console.log(booking)
+    
 
     if (date.toISOString() >= booking.dataValues.startDate.toISOString() && date.toISOString <= booking.dataValues.endDate.toISOString() ) {
         const error = new Error("Bookings that have been started can't be deleted")

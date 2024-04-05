@@ -71,8 +71,10 @@ const checkUsername = async (req, res, next) => {
         username: "User with that username already exists" 
       }
     }); 
+  } else {
+    next(); 
   }
-  next(); 
+  
 }
 
 

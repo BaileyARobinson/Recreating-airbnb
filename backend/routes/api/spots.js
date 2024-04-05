@@ -17,20 +17,15 @@ router.get('/', validateQuery, async (req, res, next) => {
 
     const pagination = {}
 
-    if (page && size) {
-  
+    page = parseInt(page) || 1;
+    size = parseInt(size) || 20;
 
-        page = parseInt(page)
-        size = parseInt(size)
-        
-        if (isNaN(page) || page < 0 || page > 10) page = 1
-        if (isNaN(page) || size < 0 || size > 20) size = 20
+    if (page > 10) page = 10;
+    if (size > 20) size = 20;
 
-        pagination.limit = size;
-        pagination.offset = size * (page - 1)
+    pagination.limit = size;
+    pagination.offset = size * (page - 1)
 
-    }
-    console.log(pagination)
 
     const getAllSpots = await Spot.findAll({  
         include: [ { model: Review}, { model: SpotImage}],
@@ -80,7 +75,6 @@ router.get('/current', requireAuth, async (req, res) => {
     for (let spot of currUserSpots) {
 
         editSpot = spot.toJSON()
-        console.log(editSpot)
     
     let reviews = await Review.findAll({
         where: {
@@ -91,7 +85,6 @@ router.get('/current', requireAuth, async (req, res) => {
        reviews.forEach((review) => totalStars += review.stars)
         
        let avgReview = (totalStars / reviews.length)
-       //console.log(avgReview)
 
             editSpot.avgRating = avgReview
         
@@ -141,7 +134,6 @@ router.get('/:spotId', checkIfSpotExists, async (req, res, next) => {
     reviews.forEach((review) => totalStars += review.stars)
         
        let avgReview = (totalStars / reviews.length)
-       //console.log(avgReview)
 
        editableSpot.avgStarRating = avgReview
 
@@ -252,7 +244,6 @@ router.get('/:spotId/reviews', checkIfSpotExists, async (req, res, next) => {
 
     const spot = await Spot.findByPk(req.params.spotId, { include: { model: Review }})
 
-    console.log(spot)
     const reviewArr = [];
     const reviews = {};
     if (spot.dataValues.Reviews.length) {

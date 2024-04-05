@@ -13,7 +13,7 @@ const {validateCreateReview} = require('../../utils/validation')
 router.get('/current', requireAuth, async (req, res) => {
 
     const { user } = req
-    console.log(user)
+    
     
     const reviews = await Review.findAll({ 
         where: {
