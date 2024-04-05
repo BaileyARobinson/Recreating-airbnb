@@ -111,7 +111,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 //Get details of a Spot from an Id
 
-router.get('/:spotId', async (req, res, next) => {
+router.get('/:spotId', checkIfSpotExists, async (req, res, next) => {
 
     const spot = await Spot.findByPk(req.params.spotId, {
         include: 
@@ -127,9 +127,6 @@ router.get('/:spotId', async (req, res, next) => {
                     'firstName', 
                     'lastName']}]})
     
-    
-
-    if (spot) {
 
     const editableSpot = spot.toJSON()
 
@@ -150,12 +147,6 @@ router.get('/:spotId', async (req, res, next) => {
 
        res.json(editableSpot)
 
-    } else {
-        const error = new Error("Spot couldn't be found")
-        error.status = 404
-        next(error)
-    }
-    
 
 })
 
@@ -242,7 +233,7 @@ router.delete('/:spotId', [requireAuth, checkIfSpotExists, authSpotMustBelongToC
     const spot = await Spot.findByPk(req.params.spotId) 
   
     const { user } = req 
-    if (spot){
+    
     if (spot.dataValues.ownerId === user.id) {
 
         spot.destroy()
@@ -250,11 +241,6 @@ router.delete('/:spotId', [requireAuth, checkIfSpotExists, authSpotMustBelongToC
         res.json({
             message: "Successfully deleted"
         })
-    }
-    }   else {
-        const error = new Error("Spot couldn't be found")
-        error.status = 404
-        next(error)
     }
         
 
