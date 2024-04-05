@@ -411,35 +411,12 @@ router.post('/:spotId/bookings', [requireAuth, checkIfSpotExists, authSpotCannot
         //booking conflict 
         
         for (let booking of spot.dataValues.Bookings){
-            
-            if (startDate >= booking.dataValues.startDate.toISOString() && startDate < booking.dataValues.endDate.toISOString() && endDate > booking.dataValues.startDate.toISOString() && endDate <= booking.dataValues.endDate.toISOString()){
-                console.log("I am here")
-                return res.status(403).json({
-                    message: "Sorry, this spot is already booked for the specified dates",
-                    errors: {
-                        startDate: "Start date conflicts with an existing booking",
-                        endDate: "End date conflicts with an existing booking"
-                    }
-                }) 
-            }
-        
 
-            if (startDate >= booking.dataValues.startDate.toISOString() && startDate < booking.dataValues.endDate.toISOString()) {
-                return res.status(403).json({
-                    message: "Sorry, this spot is already booked for the specified dates",
-                    errors: {
-                        startDate: "Start date conflicts with an existing booking"
-                    }
-                })
-            } if (endDate > booking.dataValues.startDate.toISOString() && endDate <= booking.dataValues.endDate.toISOString()) {
+            const error = checkBookings(startDate, endDate, booking)
+            console.log(error)
+            if (error) next(error)
 
-                return res.status(403).json({
-                    message: "Sorry, this spot is already booked for the specified dates",
-                    errors: {endDate: "End date conflicts with an existing booking"}
-            })
         }
-
-    }
 
         const newBooking = await Booking.create({
             spotId: spot.dataValues.id,
