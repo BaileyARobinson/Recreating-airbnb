@@ -21,15 +21,11 @@ function checkBookings(startDate, endDate, booking) {
 
     const bookingStartDate = booking.dataValues.startDate.toISOString().substring(0,10)
     const bookingEndDate = booking.dataValues.endDate.toISOString().substring(0,10)
-
-
-    console.log("BookingStartDate", bookingStartDate, "BookingEndDate", bookingEndDate)
-    console.log("StartDate", startDate, "EndDate", endDate)
     
     
 
     // start date and end date between booking
-    if (startDate >= bookingStartDate && startDate < bookingEndDate && endDate > bookingStartDate && endDate <= bookingEndDate){
+    if (startDate >= bookingStartDate && startDate <= bookingEndDate && endDate >= bookingStartDate && endDate <= bookingEndDate){
             
         const error = new Error("Sorry, this spot is already booked for the specified dates")
         error.errors = {
@@ -307,5 +303,47 @@ const cannotFindSpot = async (req, res, next) => {
 
 }
 
+const checkPageAndSize = async (req, res, next) => {
 
-module.exports = {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authBookingMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, authBookingOrSpotBelongsToCurrUser, findBookingWithId, checkIfSpotExists, authReviewMustBelongToCurrUser, cannotFindReview, authRevBelongToUserFromRevImg, cannotFindReviewImage, cannotFindSpotImage, authSpotBelongToUserFromSpotImg, cannotFindSpot};
+    let { page, size } = req.query
+
+    if (page && size) {
+
+        // console.log(isNaN(page))
+        // console.log(isNaN(size))
+
+        if ((isNaN(page) || page < 1) && (isNaN(size) || size < 1)) {
+            const error = new Error("Bad Request")
+            error.errors = { page: "Page must be greater than or equal to 1", 
+            size: "Size must be greater than or equal to 1"
+            }
+            error.status = 400
+            next(error)
+        }
+
+        if (isNaN(page) || page < 1) {
+            const error = new Error("Bad Request")
+            error.errors = { page: "Page must be greater than or equal to 1"
+            }
+            error.status = 400
+            next(error)
+
+        }
+
+        if (isNaN(size) || size < 1) {
+            const error = new Error("Bad Request")
+            error.errors = { size: "Size must be greater than or equal to 1"
+            }
+            error.status = 400
+            next(error)
+        } else {
+            next()
+        }
+    } else {
+        next()
+    }
+}
+
+
+
+module.exports = {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authBookingMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, authBookingOrSpotBelongsToCurrUser, findBookingWithId, checkIfSpotExists, authReviewMustBelongToCurrUser, cannotFindReview, authRevBelongToUserFromRevImg, cannotFindReviewImage, cannotFindSpotImage, authSpotBelongToUserFromSpotImg, cannotFindSpot, checkPageAndSize};

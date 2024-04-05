@@ -7,21 +7,21 @@ const { Op } = require('sequelize');
 const { Spot, User, Booking, Review, ReviewImage, SpotImage, Sequelize } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const {validateCreateSpot, validateCreateReview} = require ('../../utils/validation');
-const {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, checkIfSpotExists, cannotFindSpot} = require ('../../utils/helperfunctions')
+const {getAvgReview, checkBookings, validateBookingDates, authSpotMustBelongToCurrentUser, authSpotCannotBelongToCurrentUser, checkIfSpotExists, cannotFindSpot, checkPageAndSize} = require ('../../utils/helperfunctions')
 
 //get calls
 
-router.get('/', async (req, res) => {
+router.get('/', checkPageAndSize, async (req, res, next) => {
 
     let { page , size } = req.query
 
-    pagination = {}
+    const pagination = {}
 
     if (page && size) {
+  
 
         page = parseInt(page)
         size = parseInt(size)
-
         
         if (isNaN(page) || page < 0 || page > 10) page = 1
         if (isNaN(page) || size < 0 || size > 20) size = 20
@@ -30,11 +30,13 @@ router.get('/', async (req, res) => {
         pagination.offset = size * (page - 1)
 
     }
+    console.log(pagination)
 
     const getAllSpots = await Spot.findAll({  
         include: [ { model: Review}, { model: SpotImage}],
         ...pagination
      })
+
     const results = []
     for (let spot of getAllSpots) {
 
@@ -304,22 +306,27 @@ router.post('/:spotId/reviews', [requireAuth, checkIfSpotExists, validateCreateR
     const spot = await Spot.findByPk(req.params.spotId,
         {include: { model: Review}})
 
+        let userHasNotWrittenReview = true
         spot.dataValues.Reviews.forEach((review) => {
 
             if (review.dataValues.userId === user.dataValues.id) {
+                userHasNotWrittenReview = false
                 const error = new Error('User already has a review for this spot')
                 error.status = 500
                 next(error)
             } 
 
         })
-        const newReview = await Review.create({
+        if (userHasNotWrittenReview){
+            const newReview = await Review.create({
             spotId: req.params.spotId,
             userId: user.dataValues.id,
             review, 
             stars
         })
         res.json(newReview)
+
+    }
         
 
 })
