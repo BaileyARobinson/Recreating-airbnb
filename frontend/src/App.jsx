@@ -6,6 +6,7 @@ import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation-bonus';
 import * as sessionActions from './store/session';
 import { Modal } from './context/Modal';
+import SpotsIndex from './components/Spots/SpotsIndex'
 
 function Layout() {
   const dispatch = useDispatch();
@@ -32,16 +33,21 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1>Welcome!</h1>
+        element: <SpotsIndex />
+      }, 
+      {
+        path: 'login',
+        element: <h1>Log me in!</h1>
       },
-      // {
-      //   path: 'login',
-      //   element: <LoginFormPage />
-      // },
-      // {
-      //   path: 'signup',
-      //   element: <SignupFormPage />
-      // }
+      {
+        path: 'signup',
+        element: <h1>SignMeUp</h1>
+      },
+      {
+        path: 'spots',
+        element: <SpotsIndex />
+      }
+      
     ]
   }
 ]);

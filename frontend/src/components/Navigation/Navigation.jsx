@@ -6,6 +6,7 @@ import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import './Navigation.css';
 
+
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
 
@@ -30,16 +31,22 @@ function Navigation({ isLoaded }) {
           />
           {/* <NavLink to="/signup">Sign Up</NavLink> */}
         </li>
+
+      
       </>
     );
 
   return (
+   <>
     <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      {isLoaded && sessionLinks}
-    </ul>
+     
+        <li>
+         <NavLink to="/">Here</NavLink>
+        </li>
+        {isLoaded && sessionLinks}
+      </ul>
+     
+    </>
   );
 }
 

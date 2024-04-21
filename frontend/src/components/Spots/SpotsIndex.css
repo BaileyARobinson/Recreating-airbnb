@@ -1,0 +1,27 @@
+.all-spots {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-right: 0px;
+    padding-left: 0px
+}
+
+.abbreviated-spot {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px
+
+}
+
+.thumbnail {
+    width: 300px;
+}
+
+.bottom-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
