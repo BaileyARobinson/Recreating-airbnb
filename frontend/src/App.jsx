@@ -7,6 +7,7 @@ import Navigation from './components/Navigation/Navigation-bonus';
 import * as sessionActions from './store/session';
 import { Modal } from './context/Modal';
 import SpotsIndex from './components/Spots/SpotsIndex'
+import SpotDisplay from './components/Spots/SpotDisplay'
 
 function Layout() {
   const dispatch = useDispatch();
@@ -46,7 +47,11 @@ const router = createBrowserRouter([
       {
         path: 'spots',
         element: <SpotsIndex />
-      }
+      },
+      {
+        path: 'spots/:spotId',
+        element: <SpotDisplay/>
+      } 
       
     ]
   }
