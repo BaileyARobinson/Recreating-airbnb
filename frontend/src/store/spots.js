@@ -1,7 +1,11 @@
 //action Type Constants
 
-export const LOAD_SPOTS = 'spots/LOAD_SPOTS'
+import { csrfFetch } from "./csrf"
 
+export const LOAD_SPOTS = 'spots/LOAD_SPOTS'
+export const LOAD_SPOT = 'spots/LOAD_SPOT'
+export const CREATE_SPOT = 'spots/CREATE_SPOT'
+export const ADD_IMAGE = 'spots/ADD_IMAGE'
 
 //action creators
 
@@ -9,6 +13,25 @@ export const loadSpots = (spots) => ({
     type: LOAD_SPOTS,
     spots
 })
+
+export const loadSpot = (spot) => ({
+    type: LOAD_SPOT,
+    spot
+})
+
+export const createSpot = (spot) => ({
+    type: CREATE_SPOT,
+    spot
+})
+
+export const addImageToSpot = (image, spotId) => ({
+    type: ADD_IMAGE,
+    spotId,
+    image
+})
+
+// export const addImageToASpot = (spotId, image)
+
 
 //THUNK ACTION CREATORS 
 
@@ -25,6 +48,61 @@ export const getAllSpots = () => async (dispatch) => {
     }
 }
 
+export const getSpot = (spotId) => async (dispatch) => {
+    const res = await fetch(`/api/spots/${spotId}`)
+
+    if(res.ok) {
+        const spot = await res.json()
+        dispatch(loadSpot(spot))
+        return spot
+    } else {
+        const errors = await res.json()
+        return errors
+    }
+}
+
+export const createASpot = (newSpotData) => async (dispatch) => {
+    const res = await csrfFetch('/api/spots', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newSpotData)
+    }) 
+    if (res.ok) {
+        const newSpot = await res.json();
+        console.log(`hello1`)
+        dispatch(createSpot(newSpot))
+        console.log('fetchNewSpot', newSpot)
+        return newSpot
+      
+    } else {
+        const errors = await res.json()
+        console.log(`hello`)
+        return errors 
+    }
+}
+export const addAnImage = (imageData, spotId) =>  async (dispatch) => {
+    const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(imageData)
+    })
+    if (res.ok) {
+        const newImage = await res.json()
+        dispatch(addImageToSpot(newImage))
+        console.log('fetch', newImage)
+        return newImage
+    } else {
+        const errors = await res.json()
+        return errors 
+    }
+
+}
+
+
 //SPOTS REDUCER
 
 const spotsReducer = (state = {}, action) => {
@@ -35,7 +113,13 @@ const spotsReducer = (state = {}, action) => {
                 spotsState[spot.id] = spot
             })
             return spotsState
-        } 
+        } case LOAD_SPOT: {
+            return {...state, ...action.spot}
+        } case CREATE_SPOT: {
+            return {...state, ...action.spot}
+        } case ADD_IMAGE: {
+            return {...state, [action.spotId]: [action.image]}
+        }
         default: 
         return state;
     }

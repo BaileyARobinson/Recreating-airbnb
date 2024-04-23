@@ -34,7 +34,7 @@ const SpotsIndex = () =>  {
                 <img className="thumbnail"  src={spot.previewImage} alt='thumbnail of boat'/>
                 <div className='bottom-text'> 
                     <div className='bottom-left-text'>
-                        <p>{`${spot.city}, ${spot.state}`}</p>
+                        <p fontWeight='bold' >{`${spot.city}, ${spot.state}`}</p>
                         <span className='star-rating'> <AiFillStar />
                         {spot.avgRating ? Number(spot.avgRating).toFixed(1) : `New`}</span>
                     </div>

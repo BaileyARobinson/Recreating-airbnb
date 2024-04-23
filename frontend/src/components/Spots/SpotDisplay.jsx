@@ -1,4 +1,4 @@
-import { getAllSpots } from "../../store/spots"
+import { getSpot } from "../../store/spots"
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
@@ -8,33 +8,34 @@ function DisplaySpot() {
     
     const { spotId } = useParams()
 
-    console.log('user params spotId', spotId)
-    
-    const spot = useSelector((state) => state.spots[spotId])
+    const spot = useSelector((state) => state.spots)
 
-   console.log('spots', spot)
+    console.log(spot)
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getAllSpots())
-    }, [dispatch])
+        dispatch(getSpot(spotId))
+    }, [dispatch, spotId])
 
-    // let spotToDisplay;
-    // if (spots) {
-    //     console.log('hello')
-    // spotToDisplay = spots.find((spot) => {
-    //     console.log('spotid',spot.id)
-    //     +spot.id === +spotId})
-    // }
-    // console.log('spotToDisplay', spotToDisplay)
-
+    if (Object.values(spot).length !== 0) {
     return (
-        <div>
-        {spot?.name}
+        
+        <div className='image-display'>
+        
+            <img className='main-image' src={spot.SpotImages[0]} alt='picture of boat'/>
+            <div className='4-small-images'>
+                <img src={spot.SpotImages[1]} alt='picture of boat'/>
+                 <img src={spot.SpotImages[2]} alt='picture of boat'/>
+                 <img src={spot.SpotImages[3]} alt='picture of boat'/>
+                 <img src={spot.SpotImages[4]} alt='picture of boat'/>
+                 
+           </div>
         </div>
+       
     )
 
+    }
 }
 
 export default DisplaySpot

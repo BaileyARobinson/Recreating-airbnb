@@ -41,7 +41,7 @@
 .spot-name {
     z-index: 10;
     position: absolute;
-    background-color: grey;
+    background-color: lightgrey;
     top: 30%;
     left: 40%;
 }
