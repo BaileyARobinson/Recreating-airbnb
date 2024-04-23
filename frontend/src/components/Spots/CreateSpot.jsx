@@ -21,6 +21,7 @@ const [title, setTitle] = useState('')
   const [imageUrl4, setimageUrl4] = useState('')
   const [lat, setLat] = useState(1)
   const [lng, setLng] = useState(1)
+  const [errors, setErrors] = useState({})
  
 
   const dispatch = useDispatch()
@@ -29,8 +30,45 @@ const [title, setTitle] = useState('')
   
   
   useEffect(() => {
+    const captureErrors = {}
+    if (!title) captureErrors.title = 'Name is required'
+    if (!country) captureErrors.country = 'Country is required'
+    if (!streetAddress) captureErrors.address = 'Address is required'
+    if (!city) captureErrors.city = 'City is required'
+    if (!state) captureErrors.state = 'State is required'
+    if (!price) captureErrors.price = 'Price is required'
+    if (description.length < 30) captureErrors.price = 'Description needs a minimum of 30 charachters'
+    if (!previewImage) captureErrors.previewImage = "Preview image is required";
+
+    if (previewImage != null && !(previewImage.includes(".png") ||  
+        previewImage.includes(".jpg") ||
+        previewImage.includes(".jpeg"))) {
+            captureErrors.previewImageType = "Image URL must end in .png, .jpg. or .jpeg"
+        }
+
+    if (imageUrl1 != null && !(imageUrl1.includes(".png") ||  
+        imageUrl1.includes(".jpg") ||
+        imageUrl1.includes(".jpeg"))) {
+            captureErrors.imageUrl1 = "Image URL must end in .png, .jpg. or .jpeg"
+        }
+    if (imageUrl2 != null && !(imageUrl2.includes(".png") ||  
+        imageUrl2.includes(".jpg") ||
+        imageUrl2.includes(".jpeg"))) {
+            captureErrors.imageUrl2 = "Image URL must end in .png, .jpg. or .jpeg"
+        }
+    if (imageUrl3 != null && !(imageUrl3.includes(".png") ||  
+        imageUrl3.includes(".jpg") ||
+        imageUrl3.includes(".jpeg"))) {
+            captureErrors.imageUrl3 = "Image URL must end in .png, .jpg. or .jpeg"
+        }
+    if (imageUrl4 != null && !(imageUrl4.includes(".png") ||  
+        imageUrl4.includes(".jpg") ||
+        imageUrl4.includes(".jpeg"))) {
+            captureErrors.imageUrl4 = "Image URL must end in .png, .jpg. or .jpeg"
+        }
 
 
+    setErrors(captureErrors)
   }, [title, country, streetAddress, city, state, description, price, previewImage, submitted])
 
   const navigate = useNavigate()
@@ -102,6 +140,7 @@ const [title, setTitle] = useState('')
                         onChange={(e) => setCountry(e.target.value)}
                         />
                 </div>
+                <div className='errors'>{submitted && errors.country}</div>
                 <div>
                     <label htmlFor='Street-Address'>Street Address</
                     label> 
@@ -112,6 +151,7 @@ const [title, setTitle] = useState('')
                         onChange={(e) => setStreetAddress(e.target.value)}
                         />
                 </div>
+                <div className='errors'>{submitted && errors.address}</div>
                 <div>
                     <label htmlFor='City'>City</
                     label> 
@@ -122,6 +162,7 @@ const [title, setTitle] = useState('')
                         onChange={(e) => setCity(e.target.value)}
                         />
                 </div>
+                <div className='errors'>{submitted && errors.city}</div>
                 <div>
                     <label htmlFor='State'>State</
                     label> 
@@ -132,28 +173,31 @@ const [title, setTitle] = useState('')
                         onChange={(e) => setState(e.target.value)}
                         />
                 </div>
+                <div className='errors'>{submitted && errors.state}</div>
                 <div>
                     <h3>Describe your place to a guests</h3>
                     <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
 
-                    <input 
+                    <textarea 
                         className='Description'
                         placeholder='Description'
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         />
                 </div>
+                <div className='errors'>{submitted && errors.description}</div>
                 <div>
                     <h3>Create a title for you spot</h3>
                     <p>Catch guests attention with a spot title that highlights what makes your space special.</p>
 
                     <input 
                         className='Title'
-                        placeholder='Title'
+                        placeholder='Name'
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         />
                 </div>
+                <div className='errors'>{submitted && errors.title}</div>
                 <div>
                     <h3>Set a base price for your spot</h3>
                     <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
@@ -164,6 +208,7 @@ const [title, setTitle] = useState('')
                         onChange={(e) => setPrice(e.target.value)}
                         />
                 </div>
+                <div className='errors'>{submitted && errors.price}</div>
                 <div className='photos'>
                     <h3>Liven up your spot with photos</h3>
                     <p>Submit a link to at least one photo to publish your spot.</p>
@@ -173,30 +218,35 @@ const [title, setTitle] = useState('')
                         value={previewImage}
                         onChange={(e) => setPreviewImage(e.target.value)}
                         />
+                         <div className='errors'>{submitted && errors.previewImage}</div>
+                         <div className='errors'>{submitted && errors.previewImageType}</div>
                         <input 
                         className='image URL'
                         placeholder='Image URL'
                         value={imageUrl1}
                         onChange={(e) => setimageUrl1(e.target.value)}
                         />
+                         <div className='errors'>{submitted && errors.imageUrl1}</div>
                             <input 
                         className='Image URL'
                         placeholder='Image URL'
                         value={imageUrl2}
                         onChange={(e) => setimageUrl2(e.target.value)}
                             />
+                             <div className='errors'>{submitted && errors.imageUrl2}</div>
                             <input 
                         className='Image URL'
                         placeholder='Image URL'
                         value={imageUrl3}
                         onChange={(e) => setimageUrl3(e.target.value)}
-                            />
+                            /> <div className='errors'>{submitted && errors.imageUrl3}</div>
                               <input 
                         className='Image URL'
                         placeholder='Image URL'
                         value={imageUrl4}
                         onChange={(e) => setimageUrl4(e.target.value)}
                             />
+                             <div className='errors'>{submitted && errors.imageUrl4}</div>
                 </div>
                 <button className='submit-spot' >
                 Create Spot

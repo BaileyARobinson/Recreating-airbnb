@@ -19,18 +19,18 @@ function DisplaySpot() {
     }, [dispatch, spotId])
 
     if (Object.values(spot).length !== 0) {
+
+    const previewImage = spot.SpotImages.find((image) => image.preview === true)
     return (
         
         <div className='image-display'>
         
-            <img className='main-image' src={spot.SpotImages[0]} alt='picture of boat'/>
-            <div className='4-small-images'>
-                <img src={spot.SpotImages[1]} alt='picture of boat'/>
-                 <img src={spot.SpotImages[2]} alt='picture of boat'/>
-                 <img src={spot.SpotImages[3]} alt='picture of boat'/>
-                 <img src={spot.SpotImages[4]} alt='picture of boat'/>
+            <img className='main-image' src={previewImage.url} alt='picture of boat'/>
+            {/* <div className='4-small-images'>
+                {spot.spotImages.map((image) => { 
+                    return <img className='small-image' src={image.url})}}               
                  
-           </div>
+           </div> */}
         </div>
        
     )

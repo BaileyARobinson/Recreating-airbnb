@@ -9,14 +9,16 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
 
   return (
-    <nav>
+    <nav className='navbar'>
       <Link to='/'> 
-        <SlAnchor />
+        <SlAnchor /> 
         </Link>
       <div>
        {isLoaded && (
-         <div>
-           <ProfileButton user={sessionUser} />
+         <div className='right-side-nav'>
+         {sessionUser && <Link className='create-a-spot-link' to='/spots/new'>Create a Spot</Link>
+          }
+           <ProfileButton className='profile-button'user={sessionUser} />
            </div>
         )}
       </div>

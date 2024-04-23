@@ -1,0 +1,24 @@
+.whole-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 325px;
+    height: 300px;
+    padding: 20px;
+
+}
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
+input {
+    width: 300px;
+    padding: 0px 20px;
+    margin: 5px;
+    box-sizing: border-box;
+    
+}
+
+
