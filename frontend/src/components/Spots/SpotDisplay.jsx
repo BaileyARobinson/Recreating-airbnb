@@ -1,18 +1,23 @@
 import { getSpot, getReviewsBySpotId } from "../../store/spots"
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import './SpotDisplay.css'
 import { AiFillStar } from "react-icons/ai"
+import OpenModalButton from '../OpenModalButton'
+import CreateReview from '../Reviews/CreateReviewModal'
 
 
 function DisplaySpot() {
     
     const { spotId } = useParams()
 
+
     const spot = useSelector((state) => state.spots.displaySpot)
     const user = useSelector((state) => state.session.user)
     const reviews = useSelector ((state) => state.spots.displayReviews)
+
+    const [submitted, setSubmitted] = useState(false)
     
 
     const dispatch = useDispatch()
@@ -25,13 +30,17 @@ function DisplaySpot() {
         dispatch(getReviewsBySpotId(spotId))
     }, [dispatch, spotId])
 
+    useEffect(() => {
+    },[submitted])
+
     
     if (spot) {
     const previewImage = spot.SpotImages.find((image) => image.preview === true)
     console.log(spot)
 
     const convertDate = (date) => {
-        const months = [ 
+        const months = [
+            '', 
             'January', 
             'Feburary', 
             'March', 
@@ -49,8 +58,7 @@ function DisplaySpot() {
         return `${month} ${date.substring(0,4)}`
     }
 
-    let date;
-    
+    console.log(spot)
     return (
         <div className='page'>
         <div className='header'>
@@ -78,7 +86,7 @@ function DisplaySpot() {
                 <div className='price-stars'>
                     <div>{`$${spot.price} / night`}</div>
                     <div className='star-rating'> <AiFillStar />
-                        {spot.avgRating ? Number(spot.avgRating).toFixed(1) : `New`}</div>
+                        {(spot.avgStarRating !== null) ? (spot.numReviews === 1)? `${Number(spot.avgStarRating).toFixed(1)} -  ${spot.numReviews} review` :`${Number(spot.avgStarRating).toFixed(1)} -  ${spot.numReviews} reviews`  : `New`}</div>
                 </div>
                 <button className='reserve-button' onClick={() => alert('Feature coming soon!')}>Reserve</button>
             </div>             
@@ -87,22 +95,25 @@ function DisplaySpot() {
         <hr></hr>
         <div className='reviews'>
             <div className='star-rating'> <AiFillStar />
-                {spot.avgRating ? Number(spot.avgRating).toFixed(1) : `New`}<span><span>  -  </span>{`${spot.numReviews} Review`}</span>
+                {spot.avgRating > 0 ? Number(spot.avgRating).toFixed(1) : `New`}<span><span>  -  </span>{`${spot.numReviews} Review`}</span>
             </div>
-                <div>{user.id !== spot.ownerId && 
-                    <button className='post-button'>Post a Review
-                    </button>}
+                <div>{user?.id !== spot.ownerId && 
+                    <OpenModalButton 
+                    buttonText='Post a Review'
+                    modalComponent={<CreateReview setSubmitted={setSubmitted}/>}
+                    />}
                 </div>
 
         </div>
         
-        <div className='reviews'>{reviews ? reviews.Reviews.map((r) => {
+        <div className='reviews'>{ Number(spot.numReviews) > 0 ?  reviews?.Reviews.map((r) => {
             return (<div>
                 <div className='reviewer-name'>{r.User.firstName}</div> 
                 <div className='review-date'>{convertDate(r.createdAt)}</div>
                 <div className='review'>{r.review}</div>
                 </div>)
-        }): <div></div>}</div>
+        }) : <div>Write the first review.</div> }
+        </div>
 
      </div>
     )

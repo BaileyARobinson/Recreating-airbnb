@@ -1,0 +1,63 @@
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { createAReview } from '../../store/reviews'
+import StarRating from './StarReview'
+import { useModal } from '../../context/Modal';
+import { useParams } from 'react-router-dom';
+import './CreateReviewModal.css'
+
+function CreateReview ({setSubmitted}) {
+
+    const [review, setReview] = useState('')
+    const [stars, setStars] = useState(0)
+    const [errors, setErrors] = useState({})
+    
+    const { closeModal } = useModal()
+
+    const {spotId} = useParams()
+    const dispatch = useDispatch()
+  
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        
+
+        const reviewData = {
+            review,
+            stars,
+        }
+        
+
+        return dispatch(createAReview(reviewData, spotId)).then(setSubmitted(true)).then(closeModal).catch(async (res) => {
+            const data = await res.json();
+            if (data?.errors) {
+                setErrors(data.errors)
+                console.log("====>",errors)
+                
+            }
+        })
+    }
+    
+    return (
+        <>
+            <h1>How was your stay?</h1>
+            <form onSubmit={handleSubmit}>  
+            <input className='review' 
+            type='text'
+            placeholder='Leave your review here...'
+            value={review}
+            onChange={(e) => setReview(e.target.value)}
+            required
+            />
+            <StarRating setterStars={setStars} filledStars={stars}/> <div>{errors.stars}</div>
+            <div className='submit-button'> 
+                <button onClick={handleSubmit}type='submit'>Submit Your Review</button>
+            </div><div>{errors.message}</div>
+            </form>
+            
+        </>
+    )
+
+}
+
+export default CreateReview

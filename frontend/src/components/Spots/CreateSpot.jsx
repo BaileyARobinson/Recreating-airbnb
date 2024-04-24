@@ -22,6 +22,7 @@ const [title, setTitle] = useState('')
   const [lat, setLat] = useState(1)
   const [lng, setLng] = useState(1)
   const [errors, setErrors] = useState({})
+  
  
 
   const dispatch = useDispatch()
@@ -115,7 +116,6 @@ const [title, setTitle] = useState('')
     
     for (let image of images) {
         await dispatch(addAnImage(image, createdSpot.id))
-        console.log('am i running')
         
     }
        

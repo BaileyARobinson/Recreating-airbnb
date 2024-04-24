@@ -77,14 +77,11 @@ export const createASpot = (newSpotData) => async (dispatch) => {
     }) 
     if (res.ok) {
         const newSpot = await res.json();
-        
         dispatch(createSpot(newSpot))
-        console.log('fetchNewSpot', newSpot)
         return newSpot
       
     } else {
         const errors = await res.json()
-        console.log(`hello`)
         return errors 
     }
 }
