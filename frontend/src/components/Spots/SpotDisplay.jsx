@@ -25,12 +25,31 @@ function DisplaySpot() {
         dispatch(getReviewsBySpotId(spotId))
     }, [dispatch, spotId])
 
-    console.log("hiizies", reviews)
-
-
+    
     if (spot) {
     const previewImage = spot.SpotImages.find((image) => image.preview === true)
     console.log(spot)
+
+    const convertDate = (date) => {
+        const months = [ 
+            'January', 
+            'Feburary', 
+            'March', 
+            'April', 
+            'May', 
+            'June', 
+            'July', 
+            'August', 
+            'September', 
+            'October', 
+            'November', 
+            'December']
+        const month = months[date.substring(6,7)]
+
+        return `${month} ${date.substring(0,4)}`
+    }
+
+    let date;
     
     return (
         <div className='page'>
@@ -68,12 +87,21 @@ function DisplaySpot() {
         <hr></hr>
         <div className='reviews'>
             <div className='star-rating'> <AiFillStar />
-                        {spot.avgRating ? Number(spot.avgRating).toFixed(1) : `New`}<span><span>  -  </span>{`${spot.numReviews} Review`}</span></div>
-                <div>{user.id !== spot.ownerId && <button className='post-button'>Post a Review</button>}</div>
+                {spot.avgRating ? Number(spot.avgRating).toFixed(1) : `New`}<span><span>  -  </span>{`${spot.numReviews} Review`}</span>
+            </div>
+                <div>{user.id !== spot.ownerId && 
+                    <button className='post-button'>Post a Review
+                    </button>}
+                </div>
 
         </div>
-        <div>{reviews ? reviews.Reviews.map((r) => {
-            return <div>{r.review}</div>
+        
+        <div className='reviews'>{reviews ? reviews.Reviews.map((r) => {
+            return (<div>
+                <div className='reviewer-name'>{r.User.firstName}</div> 
+                <div className='review-date'>{convertDate(r.createdAt)}</div>
+                <div className='review'>{r.review}</div>
+                </div>)
         }): <div></div>}</div>
 
      </div>
