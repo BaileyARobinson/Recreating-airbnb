@@ -6,6 +6,7 @@ export const LOAD_SPOTS = 'spots/LOAD_SPOTS'
 export const LOAD_SPOT = 'spots/LOAD_SPOT'
 export const CREATE_SPOT = 'spots/CREATE_SPOT'
 export const ADD_IMAGE = 'spots/ADD_IMAGE'
+export const GET_REVIEWS = 'spots/GET_REVIEWS'
 
 //action creators
 
@@ -28,6 +29,11 @@ export const addImageToSpot = (image, spotId) => ({
     type: ADD_IMAGE,
     spotId,
     image
+})
+
+export const loadAllReviewsForSpot = (reviews) => ({
+    type: GET_REVIEWS,
+    reviews
 })
 
 // export const addImageToASpot = (spotId, image)
@@ -71,7 +77,7 @@ export const createASpot = (newSpotData) => async (dispatch) => {
     }) 
     if (res.ok) {
         const newSpot = await res.json();
-        console.log(`hello1`)
+        
         dispatch(createSpot(newSpot))
         console.log('fetchNewSpot', newSpot)
         return newSpot
@@ -93,13 +99,25 @@ export const addAnImage = (imageData, spotId) =>  async (dispatch) => {
     if (res.ok) {
         const newImage = await res.json()
         dispatch(addImageToSpot(newImage))
-        console.log('fetch', newImage)
         return newImage
     } else {
         const errors = await res.json()
         return errors 
     }
 
+}
+
+export const getReviewsBySpotId = (spotId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/spots/${spotId}/reviews`, )
+    if (res.ok) {
+        const reviews = await res.json()
+        console.log("=======>",reviews)
+        dispatch(loadAllReviewsForSpot(reviews))
+        return reviews
+    } else {
+        const errors = await res.json()
+        return errors 
+    }
 }
 
 
@@ -114,11 +132,13 @@ const spotsReducer = (state = {}, action) => {
             })
             return spotsState
         } case LOAD_SPOT: {
-            return {...state, ...action.spot}
+            return {...state, displaySpot: action.spot}
         } case CREATE_SPOT: {
             return {...state, ...action.spot}
         } case ADD_IMAGE: {
             return {...state, [action.spotId]: [action.image]}
+        } case GET_REVIEWS: {
+            return {...state, displayReviews: action.reviews}
         }
         default: 
         return state;

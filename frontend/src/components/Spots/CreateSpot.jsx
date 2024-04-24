@@ -113,11 +113,11 @@ const [title, setTitle] = useState('')
 
     const createdSpot = await dispatch(createASpot(newSpot))
     
-    images.forEach( async (image) => { 
-        if (image.url.length > 0) {
+    for (let image of images) {
         await dispatch(addAnImage(image, createdSpot.id))
-        }
-    })
+        console.log('am i running')
+        
+    }
        
     navigate(`/spots/${createdSpot.id}`)
 

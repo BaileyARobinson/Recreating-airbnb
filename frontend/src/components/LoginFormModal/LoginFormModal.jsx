@@ -40,7 +40,7 @@ function LoginFormModal() {
     <>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
-        <label>
+       <div className='form'>  <label>
           Username or Email
           <input
             type="text"
@@ -60,11 +60,13 @@ function LoginFormModal() {
         </label>
         {errors.credential && <p>{errors.credential}</p>}
         <button type="submit">Log In</button>
+        </div>
       </form>
-      <div>
+      <div className='form'>
         <h4>Sign in as Demo User</h4>
         <button type='submit' onClick={handleDemoUser}>Login as Demo User</button>
       </div>
+      
     </>
   );
 }
