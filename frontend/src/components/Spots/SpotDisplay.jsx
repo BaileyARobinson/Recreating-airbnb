@@ -33,7 +33,7 @@ function DisplaySpot() {
     useEffect(() => {
     },[submitted])
 
-    
+    console.log(submitted)
     if (spot) {
     const previewImage = spot.SpotImages.find((image) => image.preview === true)
     console.log(spot)
