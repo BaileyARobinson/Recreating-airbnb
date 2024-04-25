@@ -28,7 +28,6 @@ function CreateReview ({setSubmitted}) {
             stars,
         }
         
-        console.log(stars)
         return dispatch(createAReview(reviewData, spotId)).then(() => setSubmitted(true)).then(closeModal).catch(async (res) => {
             const data = await res.json();
             console.log(data)

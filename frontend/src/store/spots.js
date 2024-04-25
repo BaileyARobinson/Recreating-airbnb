@@ -7,6 +7,7 @@ export const LOAD_SPOT = 'spots/LOAD_SPOT'
 export const CREATE_SPOT = 'spots/CREATE_SPOT'
 export const ADD_IMAGE = 'spots/ADD_IMAGE'
 export const GET_REVIEWS = 'spots/GET_REVIEWS'
+export const GET_USER_SPOTS = 'spots/GET_USER_SPOTS'
 
 //action creators
 
@@ -36,7 +37,10 @@ export const loadAllReviewsForSpot = (reviews) => ({
     reviews
 })
 
-// export const addImageToASpot = (spotId, image)
+export const loadUsersSpots = (spots) => ({
+    type: GET_USER_SPOTS,
+    spots
+})
 
 
 //THUNK ACTION CREATORS 
@@ -115,6 +119,12 @@ export const getReviewsBySpotId = (spotId) => async (dispatch) => {
         const errors = await res.json()
         return errors 
     }
+}
+
+export const getUsersSpots = () => async (dispatch) => {
+    
+
+
 }
 
 
