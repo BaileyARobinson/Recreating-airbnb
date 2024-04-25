@@ -8,6 +8,8 @@ export const CREATE_SPOT = 'spots/CREATE_SPOT'
 export const ADD_IMAGE = 'spots/ADD_IMAGE'
 export const GET_REVIEWS = 'spots/GET_REVIEWS'
 export const GET_USER_SPOTS = 'spots/GET_USER_SPOTS'
+export const DELETE_SPOT = 'spots/DELETE_SPOT'
+export const EDIT_SPOT = 'spots/EDIT_SPOT'
 
 //action creators
 
@@ -40,6 +42,17 @@ export const loadAllReviewsForSpot = (reviews) => ({
 export const loadUsersSpots = (spots) => ({
     type: GET_USER_SPOTS,
     spots
+})
+
+export const removeSpot = (spotId) => ({
+    type: DELETE_SPOT,
+    spotId
+    
+})
+
+export const loadNewSpot = (spot) => ({
+    type: EDIT_SPOT,
+    spot
 })
 
 
@@ -112,7 +125,6 @@ export const getReviewsBySpotId = (spotId) => async (dispatch) => {
     const res = await csrfFetch(`/api/spots/${spotId}/reviews`, )
     if (res.ok) {
         const reviews = await res.json()
-        console.log("=======>",reviews)
         dispatch(loadAllReviewsForSpot(reviews))
         return reviews
     } else {
@@ -122,9 +134,50 @@ export const getReviewsBySpotId = (spotId) => async (dispatch) => {
 }
 
 export const getUsersSpots = () => async (dispatch) => {
-    
 
+    const res = await csrfFetch('/api/spots/current')
+    if (res.ok) {
+        const spots = await res.json()
+        dispatch(loadUsersSpots(spots))
+        return spots
+    } else {
+        const errors = await res.json()
+        return errors
+    }
+}
 
+export const deleteASpot = (spotId) => async (dispatch) => {
+
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content_Type': 'application/json',
+        }
+    })
+    if (res.ok) {
+        dispatch(removeSpot(spotId))
+        return res.json({ message: 'Successfully deleted'})
+    } else {
+        const errors = await res.json()
+        return errors
+    }
+}
+
+export const updateASpot = (spotData, spotId) => async (dispatch) => {
+    const res = await csrfFetch(`api/spots/${spotId}`, {
+        method: 'PUT',
+        headers: {
+            'Content_Type': 'application/json',
+        }, 
+        body: JSON.stringify(spotData)
+    })
+   if (res.ok)  {
+    const editedSpot = await res.json()
+    dispatch(loadNewSpot(editedSpot))
+   } else {
+    const errors = await res.json()
+    return errors
+   }
 }
 
 
@@ -146,6 +199,14 @@ const spotsReducer = (state = {}, action) => {
             return {...state, [action.spotId]: [action.image]}
         } case GET_REVIEWS: {
             return {...state, displayReviews: action.reviews}
+        } case GET_USER_SPOTS: {
+            return {...state, userSpots: action.spots}
+        } case DELETE_SPOT: {
+            const newState = {...state}
+            delete newState[action.reportId]
+            return newState
+        } case EDIT_SPOT: {
+            return {...state, editedSpot: action.spot}
         }
         default: 
         return state;
