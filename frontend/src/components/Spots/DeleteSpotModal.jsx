@@ -8,7 +8,7 @@ function DeleteSpot ({spotId}) {
     const { closeModal } = useModal()
     const dispatch = useDispatch()
 
-    const handleDelete = (e) => {
+    const handleDelete = () => {
        
         dispatch(deleteASpot(spotId)).then(()=> closeModal())
     }
