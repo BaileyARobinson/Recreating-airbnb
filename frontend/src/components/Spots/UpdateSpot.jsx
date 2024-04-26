@@ -1,7 +1,7 @@
 
-    import { updateASpot , getSpot} from '../../store/spots'
-    import { useState, useEffect } from "react";
-    import { useNavigate , useParams} from "react-router-dom";
+    import { getSpot} from '../../store/spots'
+    import { useEffect } from "react";
+    import { useParams} from "react-router-dom";
     import { useSelector, useDispatch } from "react-redux";
     import SpotForm from './SpotForm'
     

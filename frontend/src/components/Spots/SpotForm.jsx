@@ -26,8 +26,9 @@ function SpotForm ({ spot, formType }) {
   
     const dispatch = useDispatch() 
     
-    const captureErrors = {}
+    
     useEffect(() => {
+        const captureErrors = {}
       if (!title) captureErrors.title = 'Name is required'
       if (!country) captureErrors.country = 'Country is required'
       if (!streetAddress) captureErrors.address = 'Address is required'
@@ -35,44 +36,40 @@ function SpotForm ({ spot, formType }) {
       if (!state) captureErrors.state = 'State is required'
       if (!price) captureErrors.price = 'Price is required'
       if (description?.length < 30) captureErrors.description = 'Description needs a minimum of 30 characters'
+        
+      if (formType === 'Create A Spot') {
+            if (!previewImage) captureErrors.previewImage = "Preview image is required";
+    
+            if (previewImage != null && !(previewImage.includes(".png") ||  
+                previewImage.includes(".jpg") ||
+                previewImage.includes(".jpeg"))) {
+                    captureErrors.previewImageType = "Image URL must end in .png, .jpg. or .jpeg"
+                }
+        
+            if (imageUrl1 != null && !(imageUrl1.includes(".png") ||  
+                imageUrl1.includes(".jpg") ||
+                imageUrl1.includes(".jpeg"))) {
+                    captureErrors.imageUrl1 = "Image URL must end in .png, .jpg. or .jpeg"
+                }
+            if (imageUrl2 != null && !(imageUrl2.includes(".png") ||  
+                imageUrl2.includes(".jpg") ||
+                imageUrl2.includes(".jpeg"))) {
+                    captureErrors.imageUrl2 = "Image URL must end in .png, .jpg. or .jpeg"
+                }
+            if (imageUrl3 != null && !(imageUrl3.includes(".png") ||  
+                imageUrl3.includes(".jpg") ||
+                imageUrl3.includes(".jpeg"))) {
+                    captureErrors.imageUrl3 = "Image URL must end in .png, .jpg. or .jpeg"
+                }
+            if (imageUrl4 != null && !(imageUrl4.includes(".png") ||  
+                imageUrl4.includes(".jpg") ||
+                imageUrl4.includes(".jpeg"))) {
+                    captureErrors.imageUrl4 = "Image URL must end in .png, .jpg. or .jpeg"
+                }
+        }
  
       setErrors(captureErrors)
-    }, [title, country, streetAddress, city, state, description, price, previewImage, submitted])
-
-    if (formType === 'Create A Spot') {
-
-        useEffect(() => {
-        if (!previewImage) captureErrors.previewImage = "Preview image is required";
-  
-        if (previewImage != null && !(previewImage.includes(".png") ||  
-            previewImage.includes(".jpg") ||
-            previewImage.includes(".jpeg"))) {
-                captureErrors.previewImageType = "Image URL must end in .png, .jpg. or .jpeg"
-            }
-    
-        if (imageUrl1 != null && !(imageUrl1.includes(".png") ||  
-            imageUrl1.includes(".jpg") ||
-            imageUrl1.includes(".jpeg"))) {
-                captureErrors.imageUrl1 = "Image URL must end in .png, .jpg. or .jpeg"
-            }
-        if (imageUrl2 != null && !(imageUrl2.includes(".png") ||  
-            imageUrl2.includes(".jpg") ||
-            imageUrl2.includes(".jpeg"))) {
-                captureErrors.imageUrl2 = "Image URL must end in .png, .jpg. or .jpeg"
-            }
-        if (imageUrl3 != null && !(imageUrl3.includes(".png") ||  
-            imageUrl3.includes(".jpg") ||
-            imageUrl3.includes(".jpeg"))) {
-                captureErrors.imageUrl3 = "Image URL must end in .png, .jpg. or .jpeg"
-            }
-        if (imageUrl4 != null && !(imageUrl4.includes(".png") ||  
-            imageUrl4.includes(".jpg") ||
-            imageUrl4.includes(".jpeg"))) {
-                captureErrors.imageUrl4 = "Image URL must end in .png, .jpg. or .jpeg"
-            }
-            setErrors(captureErrors)
-        }, [previewImage, imageUrl1, imageUrl2, imageUrl3, imageUrl4])
-    }
+    }, [title, country, streetAddress, city, state, description, price, previewImage, submitted, imageUrl1, imageUrl2, imageUrl3, imageUrl4, formType])
   
     const navigate = useNavigate()
   
@@ -135,7 +132,7 @@ function SpotForm ({ spot, formType }) {
       <div className='form-div'>
        <form className='form-container' onSubmit={(e) => handleSubmit(e)}>
         <h1>{formType}</h1>
-        <h3>Where's your Place Located </h3>
+        <h3>Where&apos;s your Place Located </h3>
         <h5> Guests will only get your exact address once they book a reservation. 
         </h5>
         
@@ -226,7 +223,7 @@ function SpotForm ({ spot, formType }) {
             <div className='errors'>{submitted && errors.price}</div>
 
             <hr></hr>
-
+            {formType === 'Update A Spot' ? <div></div> :
             <div className='photos'>
                 <h3>Liven up your spot with photos</h3>
                 <p>Submit a link to at least one photo to publish your spot.</p>
@@ -265,7 +262,7 @@ function SpotForm ({ spot, formType }) {
                     onChange={(e) => setimageUrl4(e.target.value)}
                         />
                          <div className='errors'>{submitted && errors.imageUrl4}</div>
-            </div>
+            </div> }
             <hr></hr>
             <button className='submit-spot' >
             {formType}

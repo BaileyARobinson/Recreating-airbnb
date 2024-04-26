@@ -24,9 +24,7 @@ function ManageSpots () {
     function createANewSpot () {
         navigate('/spots/new')
     }
-    function navToCreateSpot () {
-
-    }
+    
 
 return (
     <div>

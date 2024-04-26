@@ -6,7 +6,6 @@ import './StarReview.css'
 const StarRating = ({setterStars, filledStars}) => {
 
     const [activeRating, setActiveRating] = useState(0)
-    const [stars, setStars] = useState(0)
     
 
     return (

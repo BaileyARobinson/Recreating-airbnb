@@ -1,5 +1,5 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useState } from 'react'
+import {  useDispatch } from 'react-redux'
+import {  useState } from 'react'
 import { createAReview } from '../../store/reviews'
 import StarRating from './StarReview'
 import { useModal } from '../../context/Modal';
@@ -28,7 +28,7 @@ function CreateReview ({setSubmitted}) {
             stars,
         }
         
-        return dispatch(createAReview(reviewData, spotId)).then(() => setSubmitted(true)).then(closeModal).catch(async (res) => {
+        return dispatch(createAReview(reviewData, spotId)).then(() => setSubmitted(true)).then(() => closeModal()).catch(async (res) => {
             const data = await res.json();
             console.log(data)
             if (data?.errors) {

@@ -23,16 +23,13 @@ function DisplaySpot() {
 
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(getSpot(spotId))
-    }, [dispatch, spotId])
+  
 
     useEffect(() => {
         dispatch(getReviewsBySpotId(spotId))
-    }, [dispatch, spotId])
+        dispatch(getSpot(spotId))
+    }, [dispatch, spotId, submitted])
 
-    useEffect(() => {
-    },[submitted])
 
     console.log(submitted)
     if (spot) {
@@ -74,7 +71,7 @@ function DisplaySpot() {
             <div className='four-small-images'>
                 {spot.SpotImages.map((image) => { 
                     if (image.preview === false) {
-                    return <img className={'small-images'} src={image.url}/>}})}              
+                    return <img key={image.id} className={'small-images'} src={image.url}/>}})}              
                  
            </div>
         </div>
@@ -108,7 +105,7 @@ function DisplaySpot() {
         </div>
         
         <div className='reviews'>{ Number(spot.numReviews) > 0 ?  reviews?.Reviews.map((r) => {
-            return (<div>
+            return (<div key={r.id}>
                 <div className='reviewer-name'>{r.User.firstName}</div> 
                 <div className='review-date'>{convertDate(r.createdAt)}</div>
                 <div className='review'>{r.review}</div>
