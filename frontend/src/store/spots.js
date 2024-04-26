@@ -164,7 +164,7 @@ export const deleteASpot = (spotId) => async (dispatch) => {
 }
 
 export const updateASpot = (spotData, spotId) => async (dispatch) => {
-    const res = await csrfFetch(`api/spots/${spotId}`, {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'PUT',
         headers: {
             'Content_Type': 'application/json',

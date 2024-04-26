@@ -6,6 +6,7 @@ import './SpotDisplay.css'
 import { AiFillStar } from "react-icons/ai"
 import OpenModalButton from '../OpenModalButton'
 import CreateReview from '../Reviews/CreateReviewModal'
+import DeleteReview from '../Reviews/DeleteReviewModal'
 
 
 function DisplaySpot() {
@@ -111,8 +112,10 @@ function DisplaySpot() {
                 <div className='reviewer-name'>{r.User.firstName}</div> 
                 <div className='review-date'>{convertDate(r.createdAt)}</div>
                 <div className='review'>{r.review}</div>
+                {r.User.id === user.id ? <OpenModalButton buttonText='Delete' modalComponent={<DeleteReview reviewId={r.id}/>}/> : <span></span>}
                 </div>)
-        }) : <div>Write the first review.</div> }
+
+        }) : user?.id === spot?.ownerId ? <div></div> : <div>Write the first review.</div> }
         </div>
 
      </div>

@@ -1,4 +1,4 @@
-import { SpotForm } from './SpotForm'
+import SpotForm from './SpotForm'
 
 import { useSelector} from "react-redux";
 
@@ -8,7 +8,9 @@ function CreateSpot () {
 const sessionUser = useSelector((state) => state.session?.user)
 
 console.log(sessionUser)
-if (sessionUser) {
+
+
+
  const spot = {
     name: '',
     country: '', 
@@ -20,20 +22,15 @@ if (sessionUser) {
     lat: '',
     lng: '',
     previewImage: '',
-    iamgeUrl1: '',
-    imageUrl2: '',
-    imageUrl3: '',
-    imageUrl4: ''
 
-
- }
 }
   
     return (
         <>
             <SpotForm
-            formType='CreateSpot'
-            spot={spot} />
+            formType='Create A Spot'
+            spot={spot} 
+            />
 
         </>
 
