@@ -9,21 +9,17 @@ function DeleteSpot ({spotId}) {
     const dispatch = useDispatch()
 
     const handleDelete = (e) => {
-        e.preventDefault()
-        dispatch(deleteASpot(spotId)).then(closeModal)
+       
+        dispatch(deleteASpot(spotId)).then(()=> closeModal())
     }
 
-    const dontDelete = (e) => {
-        e.preventDefault()
-        closeModal()
-    }
 
     return (
         <>
             <h2>Confirm Delete</h2>
             <p>Are you sure you want to remove this spot from the listings?</p>
             <button onClick={handleDelete}>Yes (Delete Spot)</button>
-            <button onClick={dontDelete}> No (Keep Spot) </button>
+            <button onClick={closeModal}> No (Keep Spot) </button>
         </>
     )
 }

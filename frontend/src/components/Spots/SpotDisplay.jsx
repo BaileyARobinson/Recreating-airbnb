@@ -31,6 +31,8 @@ function DisplaySpot() {
     }, [dispatch, spotId, submitted])
 
 
+
+
     console.log(submitted)
     if (spot) {
     const previewImage = spot.SpotImages.find((image) => image.preview === true)
@@ -109,7 +111,7 @@ function DisplaySpot() {
                 <div className='reviewer-name'>{r.User.firstName}</div> 
                 <div className='review-date'>{convertDate(r.createdAt)}</div>
                 <div className='review'>{r.review}</div>
-                {r.User.id === user.id ? <OpenModalButton buttonText='Delete' modalComponent={<DeleteReview reviewId={r.id}/>}/> : <span></span>}
+                {r.User?.id === user?.id ? <OpenModalButton buttonText='Delete' modalComponent={<DeleteReview reviewId={r.id}/>}/> : <span></span>}
                 </div>)
 
         }) : user?.id === spot?.ownerId ? <div></div> : <div>Write the first review.</div> }
