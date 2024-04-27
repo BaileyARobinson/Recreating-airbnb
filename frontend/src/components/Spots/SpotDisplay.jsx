@@ -30,13 +30,10 @@ function DisplaySpot() {
         dispatch(getSpot(spotId))
     }, [dispatch, spotId, submitted])
 
-
-
-
     console.log(submitted)
+
     if (spot) {
     const previewImage = spot.SpotImages.find((image) => image.preview === true)
-    console.log(spot)
 
     const convertDate = (date) => {
         const months = [
@@ -58,7 +55,7 @@ function DisplaySpot() {
         return `${month} ${date.substring(0,4)}`
     }
 
-    console.log(spot)
+    
     return (
         <div className='page'>
         <div className='header'>
@@ -86,7 +83,7 @@ function DisplaySpot() {
                 <div className='price-stars'>
                     <div>{`$${spot.price} / night`}</div>
                     <div className='star-rating'> <AiFillStar />
-                        {(spot.avgStarRating !== null) ? (spot.numReviews === 1)? `${Number(spot.avgStarRating).toFixed(1)} -  ${spot.numReviews} review` :`${Number(spot.avgStarRating).toFixed(1)} -  ${spot.numReviews} reviews`  : `New`}</div>
+                        {(spot.avgStarRating !== null) ? (spot.numReviews === 1) ? `${Number(spot.avgStarRating).toFixed(1)} • ${spot.numReviews} review` :`${Number(spot.avgStarRating).toFixed(1)} •  ${spot.numReviews} reviews`  : ` New ` }</div>
                 </div>
                 <button className='reserve-button' onClick={() => alert('Feature coming soon!')}>Reserve</button>
             </div>             
@@ -95,23 +92,25 @@ function DisplaySpot() {
         <hr></hr>
         <div className='reviews'>
             <div className='star-rating'> <AiFillStar />
-                {spot.avgRating > 0 ? Number(spot.avgRating).toFixed(1) : `New`}<span><span>  -  </span>{`${spot.numReviews} Review`}</span>
-            </div>
+                {spot.avgStarRating > 0 ? Number(spot.avgStarRating).toFixed(1) : `New`}<span>{`  •  `}</span>  {+spot.numReviews === 1 ? `${spot.numReviews} Review` : `${spot.numReviews} Reviews`}
+            </div> {user?.id > 0 ? 
                 <div>{user?.id !== spot.ownerId && 
                     <OpenModalButton 
                     buttonText='Post a Review'
                     modalComponent={<CreateReview setSubmitted={setSubmitted}/>}
                     />}
-                </div>
+                </div> : <div></div>
+                }
 
         </div>
         
-        <div className='reviews'>{ Number(spot.numReviews) > 0 ?  reviews?.Reviews.map((r) => {
+        <div className='reviews'>{ Number(spot.numReviews) > 0 ? 
+        reviews?.Reviews.toReversed().map((r) => {
             return (<div key={r.id}>
                 <div className='reviewer-name'>{r.User.firstName}</div> 
                 <div className='review-date'>{convertDate(r.createdAt)}</div>
                 <div className='review'>{r.review}</div>
-                {r.User?.id === user?.id ? <OpenModalButton buttonText='Delete' modalComponent={<DeleteReview reviewId={r.id}/>}/> : <span></span>}
+                {r.User?.id === user?.id ? <OpenModalButton buttonText='Delete' modalComponent={<DeleteReview reviewId={r.id} spotId={spotId}/>}/> : <span></span>}
                 </div>)
 
         }) : user?.id === spot?.ownerId ? <div></div> : <div>Write the first review.</div> }

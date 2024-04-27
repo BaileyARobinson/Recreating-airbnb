@@ -1,15 +1,18 @@
 import { deleteAReview } from '../../store/reviews'
+import { getReviewsBySpotId } from '../../store/spots'
 import { useModal } from '../../context/Modal'
 import {useDispatch} from 'react-redux'
 
-function DeleteReview ({reviewId}) {
+function DeleteReview ({reviewId, spotId}) {
 
     const { closeModal } = useModal()
     const dispatch = useDispatch()
 
     const handleDelete = async () => {
         
-        await dispatch(deleteAReview(reviewId)).then(()=>closeModal())
+        await  dispatch(deleteAReview(reviewId))
+        await dispatch(getReviewsBySpotId(spotId))
+        closeModal()
     }
 
 

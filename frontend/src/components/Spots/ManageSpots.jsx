@@ -11,6 +11,7 @@ import './ManageSpots.css'
 function ManageSpots () {
 
     const [hidden, setHidden] = useState('')
+    
 
     const spots = useSelector((state) => state.spots.userSpots)
     const dispatch = useDispatch()

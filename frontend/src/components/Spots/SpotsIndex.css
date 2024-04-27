@@ -15,11 +15,13 @@
     cursor: pointer;
     position: relative;
     flex-basis: 23%;
+    
 }
 
 .thumbnail {
     width: 300px;
     z-index: 0;
+    height: 200px;
 }
 
 .bottom-text {

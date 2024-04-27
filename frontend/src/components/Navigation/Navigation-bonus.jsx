@@ -8,10 +8,13 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
 
   return (
+    <>
     <nav className='navbar'>
-      <Link to='/'> 
+      <div className='left-side-nav'><Link to='/'> 
         <SlAnchor /> 
         </Link>
+        <a href='/'><img src='../../public/BoatBnb.png'/></a>
+        </div>
       <div>
        {isLoaded && (
          <div className='right-side-nav'>
@@ -21,7 +24,9 @@ function Navigation({ isLoaded }) {
            </div>
         )}
       </div>
+      
     </nav>
+    </>
   );
 }
 

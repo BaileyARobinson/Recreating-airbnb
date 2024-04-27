@@ -24,7 +24,6 @@ const SpotsIndex = () =>  {
 
     return (
         <>
-        <h2>Spots</h2>
         <div className='all-spots'>
         {spotsInfo && Object.values(spotsInfo).map((spot) => (
             <div className="abbreviated-spot" key={spot.id} title={spot.name} onClick={() => {

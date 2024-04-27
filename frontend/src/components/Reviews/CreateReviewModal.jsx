@@ -1,6 +1,7 @@
 import {  useDispatch } from 'react-redux'
 import {  useState } from 'react'
 import { createAReview } from '../../store/reviews'
+import { getSpot } from '../../store/spots'
 import StarRating from './StarReview'
 import { useModal } from '../../context/Modal';
 import { useParams } from 'react-router-dom';
@@ -21,7 +22,7 @@ function CreateReview ({setSubmitted}) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        
+        await dispatch(getSpot(spotId))
 
         const reviewData = {
             review,
@@ -36,7 +37,7 @@ function CreateReview ({setSubmitted}) {
             }
         })
     }
-    console.log(errors)
+   
     
     return (
         <>
@@ -52,7 +53,7 @@ function CreateReview ({setSubmitted}) {
             />
             <StarRating setterStars={setStars} filledStars={stars}/> <div></div>
             <div className='submit-button'> 
-                <button onClick={handleSubmit}type='submit'>Submit Your Review</button>
+                <button disabled={stars < 1 || review?.length < 10 } onClick={handleSubmit}type='submit'>Submit Your Review</button>
             </div><div>{errors.message}</div>
             </form>
             

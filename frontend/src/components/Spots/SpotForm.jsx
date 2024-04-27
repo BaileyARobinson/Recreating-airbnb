@@ -22,10 +22,7 @@ function SpotForm ({ spot, formType }) {
     const [imageUrl4, setimageUrl4] = useState()
     const [errors, setErrors] = useState({})
     
-   
-  
-    const dispatch = useDispatch() 
-    
+    const dispatch = useDispatch()
     
     useEffect(() => {
         const captureErrors = {}
