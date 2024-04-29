@@ -3,6 +3,8 @@ import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import './LoginForm.css';
+import { Link, useNavigate } from 'react-router-dom'
+
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -11,7 +13,7 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
-  
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,7 +25,7 @@ function LoginFormModal() {
         if (data && data.errors) {
           setErrors(data.errors);
         }
-      });
+      }).then(()=> navigate('/'))
   };
 
   const handleDemoUser = (e) => {
@@ -39,7 +41,7 @@ function LoginFormModal() {
   }
 
   return (
-    <>
+    <div className='login-container'>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
        <div className='form'>  <label>
@@ -60,16 +62,16 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit" disabled={password.length < 6 || credential.length < 4}>Log In</button>
+        {errors.credential && <p className='errors'>{errors.credential}</p>}
+        <button className= 'login-button' type="submit" disabled={password.length < 6 || credential.length < 4}>Log In</button>
         </div>
       </form>
       <div className='form'>
-        <h4>Sign in as Demo User</h4>
-        <button type='submit' onClick={handleDemoUser}>Login as Demo User</button>
+        
+        <Link className='demo-user'to={'/'} onClick={handleDemoUser}>Demo User</Link>
       </div>
       
-    </>
+    </div>
   );
 }
 

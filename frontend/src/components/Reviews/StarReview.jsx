@@ -15,7 +15,7 @@ const StarRating = ({setterStars, filledStars}) => {
             <div onMouseEnter={() => setActiveRating(3)} onMouseLeave={() => setActiveRating(0)} onClick={() => setterStars(3)} >{ activeRating > 2 || filledStars > 2 ? <MdOutlineStar /> :<FaRegStar />}</div>
             <div onMouseEnter={() => setActiveRating(4)} onMouseLeave={() => setActiveRating(0)} onClick={() => setterStars(4)}>{ activeRating > 3 || filledStars > 3 ? <MdOutlineStar /> :<FaRegStar />}</div>
             <div onMouseEnter={() => setActiveRating(5)} onMouseLeave={() => setActiveRating(0)} onClick={() => setterStars(5)}>{ activeRating > 4 || filledStars > 4 ? <MdOutlineStar /> : <FaRegStar />} </div>
-        Stars</div>
+        &nbsp;&nbsp; Stars</div>
     )
 
 

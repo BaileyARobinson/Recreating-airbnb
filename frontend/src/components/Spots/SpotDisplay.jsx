@@ -30,7 +30,7 @@ function DisplaySpot() {
         dispatch(getSpot(spotId))
     }, [dispatch, spotId, submitted])
 
-    console.log(submitted)
+
 
     if (spot) {
     const previewImage = spot.SpotImages.find((image) => image.preview === true)
@@ -54,6 +54,11 @@ function DisplaySpot() {
 
         return `${month} ${date.substring(0,4)}`
     }
+    console.log('reviews', reviews)
+    const userWroteReview = (reviews?.Reviews.find((review) => user?.id === review.userId))
+
+    console.log('notuserwrotereview', !userWroteReview)
+    console.log('user',user?.id)
 
     
     return (
@@ -89,17 +94,27 @@ function DisplaySpot() {
             </div>             
         </div>
 
-        <hr></hr>
         <div className='reviews'>
             <div className='star-rating'> <AiFillStar />
-                {spot.avgStarRating > 0 ? Number(spot.avgStarRating).toFixed(1) : `New`}<span>{`  •  `}</span>  {+spot.numReviews === 1 ? `${spot.numReviews} Review` : `${spot.numReviews} Reviews`}
-            </div> {user?.id > 0 ? 
-                <div>{user?.id !== spot.ownerId && 
+                {spot.avgStarRating > 0 ? 
+                Number(spot.avgStarRating).toFixed(1) : 
+                `New`}
+                {+spot.numReviews === 1 ? 
+                <p>&nbsp;&nbsp;{`•`}&nbsp;&nbsp; 1 Review</p> : 
+                (Number(spot.numReviews) === 0) ? 
+                
+                <span></span> : <span>&nbsp;&nbsp;{`•`}&nbsp;&nbsp; {`${spot.numReviews} Reviews`} </span>}
+            </div> 
+            
+            {user?.id > 0 ? 
+                (user?.id === spot?.ownerId ||
+                    (userWroteReview)) ? <div> </div> :
                     <OpenModalButton 
+                    className='post-review-button'
                     buttonText='Post a Review'
                     modalComponent={<CreateReview setSubmitted={setSubmitted}/>}
-                    />}
-                </div> : <div></div>
+                    />
+                 : <div></div> 
                 }
 
         </div>
@@ -110,10 +125,11 @@ function DisplaySpot() {
                 <div className='reviewer-name'>{r.User.firstName}</div> 
                 <div className='review-date'>{convertDate(r.createdAt)}</div>
                 <div className='review'>{r.review}</div>
-                {r.User?.id === user?.id ? <OpenModalButton buttonText='Delete' modalComponent={<DeleteReview reviewId={r.id} spotId={spotId}/>}/> : <span></span>}
+                {r.User?.id === user?.id ? <div className='review-button'> <OpenModalButton buttonText='Delete' modalComponent={<DeleteReview reviewId={r.id} spotId={spotId}/>}/></div> : <span></span>}
                 </div>)
+                
 
-        }) : user?.id === spot?.ownerId ? <div></div> : <div>Write the first review.</div> }
+        }) : user?.id === spot?.ownerId ? <div></div> : <div>Be the first to post a review!</div> }
         </div>
 
      </div>

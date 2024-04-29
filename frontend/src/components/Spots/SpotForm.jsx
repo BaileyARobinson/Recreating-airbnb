@@ -23,7 +23,7 @@ function SpotForm ({ spot, formType }) {
     const [errors, setErrors] = useState({})
     
     const dispatch = useDispatch()
-    
+
     useEffect(() => {
         const captureErrors = {}
       if (!title) captureErrors.title = 'Name is required'
@@ -130,8 +130,8 @@ function SpotForm ({ spot, formType }) {
        <form className='form-container' onSubmit={(e) => handleSubmit(e)}>
         <h1>{formType}</h1>
         <h3>Where&apos;s your Place Located </h3>
-        <h5> Guests will only get your exact address once they book a reservation. 
-        </h5>
+        <p> Guests will only get your exact address once they book a reservation. 
+        </p>
         
             <div>
                 <label htmlFor='Country'>Country</label> <span className='errors'>{submitted && errors.country}</span>
@@ -161,7 +161,7 @@ function SpotForm ({ spot, formType }) {
                         placeholder='City'
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        />
+                        /><span>{`,`}</span>
                 </div>
                 
                 <div className='state'>
@@ -183,7 +183,7 @@ function SpotForm ({ spot, formType }) {
 
                 <textarea 
                     className='Description'
-                    placeholder='Description'
+                    placeholder='Please write at least 30 characters'
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     />
@@ -198,7 +198,8 @@ function SpotForm ({ spot, formType }) {
 
                 <input 
                     className='Title'
-                    placeholder='Name'
+                    placeholder='Name of your spot
+                    '
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     />
@@ -210,9 +211,9 @@ function SpotForm ({ spot, formType }) {
             <div>
                 <h3>Set a base price for your spot</h3>
                 <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
-                <input 
+                <span>$</span><input 
                     className='Price per night'
-                    placeholder='Price per night'
+                    placeholder='Price per night (USD)'
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     />

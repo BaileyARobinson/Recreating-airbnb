@@ -53,7 +53,7 @@ function CreateReview ({setSubmitted}) {
             />
             <StarRating setterStars={setStars} filledStars={stars}/> <div></div>
             <div className='submit-button'> 
-                <button disabled={stars < 1 || review?.length < 10 } onClick={handleSubmit}type='submit'>Submit Your Review</button>
+                <button className='submit-button-button' disabled={stars < 1 || review?.length < 10 } onClick={handleSubmit}type='submit'>Submit Your Review</button>
             </div><div>{errors.message}</div>
             </form>
             

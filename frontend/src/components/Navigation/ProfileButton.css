@@ -8,9 +8,28 @@
     z-index: 2;
     padding-right: 5px;
     padding-left: 5px;
+    width: 150px;
 }
 
-button {
+.logout-button {
     background-color: #0070E0;
     color: white;
+    border-radius: 33%;
+    border-top: black 1px solid;
+    width: 100px;
 }
+
+.top-nav {
+    border-bottom: black 1px solid;
+}
+.middle-nav {
+    border-bottom: black 1px solid;
+    margin-top: 5px;
+    padding-bottom: 5px;
+}
+.manage-spots-link {
+    text-decoration: none;
+    color: #0070E0;
+    
+}
+

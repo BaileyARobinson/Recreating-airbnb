@@ -29,8 +29,8 @@ function ManageSpots () {
 
 return (
     <div>
-        <h1>Manage Your Spots</h1> 
-        <button onClick={createANewSpot}>Create a New Spot</button>
+        <h1>Manage Spots</h1> 
+        <button className='create-new-button' onClick={createANewSpot}>Create a New Spot</button>
         <div className='all-spots'>
         {spots && spots.Spots.map((spot) => (
             <div className="abbreviated-spot" key={spot.id} title={spot.name} onMouseEnter={() => setHidden(spot.id)} onMouseLeave={() => setHidden('true')}>
@@ -47,7 +47,7 @@ return (
                     </div>
                 </div>
                     <div className='bottom-buttons'> 
-                        <button onClick={() => navigate(`/spots/${spot.id}/update`)}>Update</button>
+                        <button className='update-button' onClick={() => navigate(`/spots/${spot.id}/update`)}>Update</button>
                         <OpenModalButton 
                             buttonText='Delete'
                             modalComponent={<DeleteSpot spotId={spot.id}/>}

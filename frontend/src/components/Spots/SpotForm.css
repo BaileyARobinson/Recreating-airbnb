@@ -49,3 +49,14 @@ textArea {
     border-bottom: 1px solid #000000;
     width: 500px;
 }
+
+.country {
+    width: 500px;
+}
+.street-address {
+    width: 500px;
+}
+
+.submit-spot {
+    
+}

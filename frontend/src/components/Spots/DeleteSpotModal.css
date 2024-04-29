@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    align-items: center;
+
+}
+
+.confirm-delete {
+    width: 350px;
+    height: 45px;
+    background-color: red;
+    margin-bottom: 10px;
+    box-shadow: 2px 2px black;
+}
+
+.stop-delete {
+    width: 350px;
+    height: 45px;
+    background-color: grey;
+    box-shadow: 2px 2px black; 
+    margin-bottom: 10px;
+}
