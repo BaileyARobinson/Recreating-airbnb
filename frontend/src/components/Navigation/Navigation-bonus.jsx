@@ -13,7 +13,6 @@ function Navigation({ isLoaded }) {
       <div className='left-side-nav'><Link to='/'> 
         <SlAnchor /> 
         </Link>
-        <a href='/'><img src='../../public/BoatBnb.png'/></a>
         </div>
       <div>
        {isLoaded && (

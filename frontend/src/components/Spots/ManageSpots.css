@@ -1,6 +1,7 @@
 
-update-button {
+.update-button {
     margin-bottom:  15px;
+    background-color: #0070E0;
 
 }
 
@@ -52,16 +53,19 @@ update-button {
     left: 40%;
 }
 
-button {
-    width: 60px;
+.modal-button {
+    width: fit-content;
+    background-color: #0070E0;
 }
 .update-button {
+    background-color: #0070E0;
     margin-right: 5px;
     width: 60px;
 
 }
 .create-new-button {
     width: 140px;
+    background-color: #0070E0;
 }
 
 

@@ -119,12 +119,10 @@
 
 
 
-#OpenModalButton {
-    background-color: 
-    
-}
 
-button {
+
+.modal-button {
+    margin-top: 10px;
     background-color: #0070E0;
-    width: 150px;
+    width: fit-content;
 }

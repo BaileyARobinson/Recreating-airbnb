@@ -20,5 +20,12 @@ input {
     box-sizing: border-box;
     
 }
+.submit-button {
+    background-color: #0070e0;
+    width: 100%; 
+    display: flex;
+    text-align: center;
+    box-shadow: 2px 2px black;
+ }
 
 
